@@ -3,7 +3,7 @@
 3.Faça um programa que leia dois valores informados pelo usuário e inverta os valores nas variáveis lidas
 4.Faça um programa que leia dois valores informados pelo usuário e inverta os valores nas variáveis lidas sem utilizar variável auxiliar
 5.Faça um programa que leia a idade de uma pessoa e informe de ela é de maior ou menor
-6.Faça um programa que leia a idade de uma pessoa e informe de ela é de maior ou de menor. O programa deve repetir essa ação até que uma idade negativa seja informada
+6.Faça um programa que leia a idade de uma pessoa e informe de ela é de maior ou de menor. O programa deve repetir essa ação até que uma idade negativa seja informada 
 7.Faça um programa que verifique se um número é primo
 8.Faça um programa que calcula o fatorial de um número
 9.Faça um programa que leia 10 números do usuário e informe quais deles são primos. Além disso, mostre a soma de todos os números primos existentes.
