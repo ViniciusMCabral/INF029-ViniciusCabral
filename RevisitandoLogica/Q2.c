@@ -5,5 +5,5 @@ int main(){
   printf("Digite as duas idades: \n");
   scanf("%d%d", &idade1, &idade2);
   somaidades = idade1 + idade2;
-  printf("A soma das duas idades eh: %d\n", somaidades);
+  printf("A soma das duas idades eh: %d\n", somaidades); 
 }
