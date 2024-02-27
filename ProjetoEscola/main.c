@@ -7,13 +7,6 @@
 #define MATRICULA_INEXISTENTE -5
 #define EXCLUSAO_SUCESSO -6
 
-int menuPrincipal();
-int menuAluno();
-int cadastrarAluno(Aluno listaAluno[], int contAluno);
-void listarAluno(Aluno listaAluno[], int contAluno);
-int atualizarAluno(Aluno listaAluno[], int contAluno);
-int excluirAluno(Aluno listaAluno[], int contAluno);
-
 typedef struct
 {
 int matricula;
@@ -24,6 +17,14 @@ int cpf;
 char dataNascimento[50];
 
 }Aluno;
+
+int menuPrincipal();
+int menuAluno();
+int cadastrarAluno(contAluno, listaAluno);
+void listarAluno(contAluno, listaAluno);
+int atualizarAluno(contAluno, listaAluno);
+int excluirAluno(contAluno, listaAluno);
+
 int main(void){
 
 Aluno listaAluno[TamAluno]; 
@@ -78,11 +79,11 @@ do{
       break;
 
     case 3:
-      int retorno = atualizarAluno(contAluno, listaAluno);
+       retorno = atualizarAluno(contAluno, listaAluno);
         if(retorno == MATRICULA_INVALIDA){
           printf("Matricula invalida\n");
         }
-        else if(retorno == MATRIULA_INEXISTENTE){
+        else if(retorno == MATRICULA_INEXISTENTE){
           printf("Matricula inexistente\n");
         }
         else{
@@ -92,11 +93,11 @@ do{
       break;
 
     case 4:
-        int retorno = excluirAluno(contAluno, listaAluno);
+        retorno = excluirAluno(contAluno, listaAluno);
         if(retorno == MATRICULA_INVALIDA){
           printf("Matricula invalida\n");
         }
-        else if(retorno == MATRIULA_INEXISTENTE){
+        else if(retorno == MATRICULA_INEXISTENTE){
           printf("Matricula inexistente\n");
         }
         else{
@@ -211,18 +212,19 @@ int atualizarAluno(int contAluno, Aluno listaAluno[]){
     }
   }
   if(achou)
-    return ATUALIACAO_ALUNO_SUCESSO;
+    return ATUALIZACAO_ALUNO_SUCESSO;
   else   
     return MATRICULA_INEXISTENTE;
 }
 }
 int excluirAluno(int contAluno, Aluno listaAluno[]){
   printf("Excluindo Aluno...\n");
+        int matricula;
         printf("Digite a matricula\n");
         scanf("%d", &matricula);
         int achou = 0;
         if(matricula < 0){
-          return MATRICULA_INVALIDA;''
+          return MATRICULA_INVALIDA;
         }
         else{
             for(int i = 0; i < contAluno - 1; i++){ 
@@ -241,7 +243,7 @@ int excluirAluno(int contAluno, Aluno listaAluno[]){
             }
 
             if(achou)
-              return EXCLUSAO_ALUNO_SUCESSO;
+              return EXCLUSAO_SUCESSO;
             else   
               return MATRICULA_INEXISTENTE;
         }
