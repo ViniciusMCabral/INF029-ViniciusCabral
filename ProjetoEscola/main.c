@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <stdio.h>
+#include <string.h>
 #define TamAluno 3
 #define CAD_SUCESSO -1
 #define MATRICULA_INVALIDA -2
@@ -8,12 +8,18 @@
 #define MATRICULA_INEXISTENTE -5
 #define EXCLUSAO_SUCESSO -6
 
+typedef struct data{
+    int dia;
+    int mes;
+    int ano;
+} Data;
 typedef struct aluno {
     int matricula;
     char sexo;
     int ativo;
     char nome[50];
     char cpf[20];
+    Data dataNascimento;
 } Aluno;
 
 int menuPrincipal();
@@ -97,12 +103,12 @@ int main(void){
                             if(retorno == MATRICULA_INVALIDA){
                                 printf("Matricula invalida\n");
                             }
-                            else if(retorno == MATRICULA_INEXISTENTE){
-                                printf("Matricula inexistente\n");
-                            }
-                            else{
+                            else if(retorno == EXCLUSAO_SUCESSO){
                                 printf("Aluno excluido com sucesso\n");
                                 contAluno--;
+                            }
+                            else{
+                                printf("Matricula Inexistente\n");
                             }
                             break;
                         default:
@@ -166,7 +172,7 @@ int cadastrarAluno(int contAluno, Aluno listaAluno[]){
         char nome[50];
         char sexo;
         char cpf[20];
-        printf("Digite a matricula\n");  
+        printf("Digite a matricula:\n");  
         scanf("%d", &matricula); 
         printf("Digite o nome:\n");
         scanf("%s", &nome);
@@ -174,6 +180,17 @@ int cadastrarAluno(int contAluno, Aluno listaAluno[]){
         scanf(" %c", &sexo);
         printf("Digite o CPF:\n");
         scanf("%s", &cpf);
+
+        printf("Digite a data de nacimento:\n");
+        printf("Dia:\n");
+        scanf("%d", &listaAluno[contAluno].dataNascimento.dia);
+
+        printf("Mes:\n");
+        scanf("%d", &listaAluno[contAluno].dataNascimento.mes);
+
+        printf("Ano:\n");
+        scanf("%d", &listaAluno[contAluno].dataNascimento.ano);
+
 
     if(matricula < 0){
         return MATRICULA_INVALIDA;
@@ -201,7 +218,8 @@ void listarAluno(int contAluno, Aluno listaAluno[]){
                 printf("Matricula: %d\n", listaAluno[i].matricula);
                 printf("Nome: %s\n", listaAluno[i].nome);
                 printf("Sexo: %c\n", listaAluno[i].sexo);
-                printf("CPF: %s\n\n", listaAluno[i].cpf);
+                printf("CPF: %s\n", listaAluno[i].cpf);
+                printf("Data de nascimento: %d/%d/%d\n\n", listaAluno[i].dataNascimento.dia, listaAluno[i].dataNascimento.mes,                                 listaAluno[i].dataNascimento.ano);
 
             }
         } 
@@ -218,10 +236,29 @@ int atualizarAluno(int contAluno, Aluno listaAluno[]){
     }
     for(int i = 0; i < contAluno; i++){
         if(listaAluno[i].matricula == matricula && listaAluno[i].ativo){
-            printf("Digite a nova matricula\n");
+            printf("Digite a nova matricula:\n");
             int novaMatricula;
             scanf("%d", &novaMatricula);
+            printf("Digite o novo nome:\n");
+            char novoNome[50];
+            scanf("%s", &novoNome);
+            printf("Digite o novo CPF:\n");
+            char novoCpf[20];
+            scanf("%s", &novoCpf);
+            printf("Digite o novo sexo:\n");
+            char novoSexo;
+            scanf(" %c", &novoSexo);
+            printf("Digite a nova data de nascimento:\n");
+            printf("Dia:\n");
+            scanf("%d", &listaAluno[i].dataNascimento.dia);
+            printf("Mes:\n");
+            scanf("%d", &listaAluno[i].dataNascimento.mes);
+            printf("Ano:\n");
+            scanf("%d", &listaAluno[i].dataNascimento.ano);
             listaAluno[i].matricula = novaMatricula;
+            listaAluno[i].sexo = novoSexo;
+            strcpy(listaAluno[i].nome, novoNome);
+            strcpy(listaAluno[i].cpf, novoCpf);
             achou = 1;
             break;
         }
@@ -233,33 +270,36 @@ int atualizarAluno(int contAluno, Aluno listaAluno[]){
 }
 int excluirAluno(int contAluno, Aluno listaAluno[]){
     printf("Excluindo Aluno...\n");
-        int matricula;
-        printf("Digite a matricula\n");
-        scanf("%d", &matricula);
-        int achou = 0;
-        if(matricula < 0){
-            return MATRICULA_INVALIDA;
-        }
-        else{
-            for(int i = 0; i < contAluno - 1; i++){ 
-                if(matricula == listaAluno[i].matricula){
-                    //exclusao logica
-                    listaAluno[i].ativo = -1;
-                    for(int j = i; j < contAluno; j++){ //shift
-                        listaAluno[j].matricula = listaAluno[j+1].matricula;
-                        listaAluno[j].sexo = listaAluno[j+1].sexo;
-                        listaAluno[j].sexo = listaAluno[j+1].sexo;
-                        listaAluno[j].nome[i] = listaAluno[j+1].nome;
-                    }
-
-                    int achou = 1;
-                    break;
+    int matricula;
+    printf("Digite a matricula\n");
+    scanf("%d", &matricula);
+    int achou = 0;
+    if(matricula < 0){
+        return MATRICULA_INVALIDA;
+    }
+    else{
+        for(int i = 0; i <= contAluno - 1; i++){ 
+            if(matricula == listaAluno[i].matricula){
+                //exclusao logica
+                listaAluno[i].ativo = -1;
+                for(int j = i; j < contAluno - 1; j++){ //shift
+                    listaAluno[j].matricula = listaAluno[j+1].matricula;
+                    listaAluno[j].sexo = listaAluno[j+1].sexo;
+                    strcpy(listaAluno[j].cpf, listaAluno[j+1].cpf);
+                    strcpy(listaAluno[j].nome, listaAluno[j+1].nome);
+                    listaAluno[j].dataNascimento.dia = listaAluno[j+1].dataNascimento.dia;
+                    listaAluno[j].dataNascimento.mes = listaAluno[j+1].dataNascimento.mes;
+                    listaAluno[j].dataNascimento.ano = listaAluno[j+1].dataNascimento.ano;
                 }
-            }
 
-            if(achou)
-                return EXCLUSAO_SUCESSO;
-            else   
-                return MATRICULA_INEXISTENTE;
+                achou = 1;
+                break;
+            }
         }
+
+        if(achou)
+            return EXCLUSAO_SUCESSO;
+        else   
+            return MATRICULA_INEXISTENTE;
+    }
 }
