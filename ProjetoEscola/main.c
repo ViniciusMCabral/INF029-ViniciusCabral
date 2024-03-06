@@ -41,6 +41,7 @@ typedef struct disc {
     int codigo;
     int ativo;
     Professor prof;
+    Aluno alunos[TamAluno];
 } Disciplina;
 
 int menuPrincipal();
@@ -59,6 +60,7 @@ int cadastrarDisciplina(int contDisc, Disciplina listaDisc[], int contProf, Prof
 void listarDisciplina(int contDisc, Disciplina listaDisc[], int contProf, Professor listaProf[]);
 int atualizarDisciplina(int contDisc, Disciplina listaDisc[], int contProf, Professor listaProf[]);
 int excluirDisciplina(int contDisc, Disciplina listaDisc[], int contProf, Professor listaProf[]);
+int inserirAlunoDisciplina(int contDisc, Disciplina listaDisc[], int contAluno, Aluno listaAluno[], int contInserirAluno);
 
 int main(void){
 
@@ -69,6 +71,7 @@ int main(void){
     int contAluno = 0;
     int contProf = 0;
     int contDisc = 0;
+    int contInserirAluno = 0;
     int matricula;
     char sexo;
     char nome[50];
@@ -110,7 +113,7 @@ int main(void){
                             if(retorno == LISTA_CHEIA)
                                 printf("Lista de alunos cheia\n\n");
                             else if(retorno == MATRICULA_INVALIDA)
-                                printf("Matricula invalida\n\n");
+                                printf("Matricula invalida, numero digitado incorreto ou numero de matricula ja existente\n\n");
                             else{
                                 printf("Aluno cadastrado com sucesso\n\n");
                                 contAluno++;
@@ -128,7 +131,7 @@ int main(void){
                                 printf("Matricula invalida\n\n");
                             }
                             else if(retorno == MATRICULA_INEXISTENTE){
-                                printf("Matricula inexistente\n\n");
+                                printf("Matricula invalida\n\n");
                             }
                             else{
                                 printf("Aluno atualizado com sucesso\n\n");
@@ -180,7 +183,7 @@ int main(void){
                             if(retorno == LISTA_CHEIA)
                                 printf("Lista de professores cheia\n\n");
                             else if(retorno == MATRICULA_INVALIDA)
-                                printf("Matricula invalida\n\n");
+                                printf("Matricula invalida, numero digitado incorreto ou numero de matricula ja existente\n\n");
                             else{
                                 printf("Professor cadastrado com sucesso\n\n");
                                 contProf++;
@@ -250,7 +253,7 @@ int main(void){
                             if(retorno == LISTA_CHEIA)
                                 printf("Lista de disciplinas cheia\n\n");
                             else if(retorno == MATRICULA_INVALIDA)
-                                printf("Codigo invalido\n\n");
+                                printf("Codigo invalido, numero digitado incorreto ou codigo ja existente para outra disciplina\n\n");
                             else if(retorno == MATRICULA_INEXISTENTE){
                                 printf("Esse professor nao foi cadastrado\n\n");
                             }
@@ -293,6 +296,16 @@ int main(void){
                             }
                             break;
                         case 5:
+                            retorno = inserirAlunoDisciplina(contDisc, listaDisc, contAluno, listaAluno, contInserirAluno);                
+                            if(retorno == MATRICULA_INVALIDA)
+                                printf("Matricula invalida\n\n");
+                            else if(retorno == MATRICULA_INEXISTENTE){
+                                printf("Esse Aluno nao foi cadastrado\n\n");
+                            }
+                            else{
+                                printf("Aluno cadastrado na disciplina com sucesso\n\n");
+                                contInserirAluno++;
+                            }
                             break;
                         case 6:
                             break;
@@ -350,6 +363,12 @@ int cadastrarAluno(int contAluno, Aluno listaAluno[]){
         char cpf[20];
         printf("Digite a matricula:\n");  
         scanf("%d", &matricula);
+        for(int i = 0; i < contAluno; i++){
+            if(matricula == listaAluno[i].matricula){
+                return MATRICULA_INVALIDA;
+                break;
+            }
+        }
         getchar();
         printf("Digite o nome:\n");
         fgets(nome, 50, stdin);
@@ -513,7 +532,13 @@ int cadastrarProf(int contProf, Professor listaProf[]){
         char sexo;
         char cpf[20];
         printf("Digite a matricula:\n");  
-        scanf("%d", &matricula); 
+        scanf("%d", &matricula);
+        for(int i = 0; i < contProf; i++){
+            if(matricula == listaProf[i].matricula){
+                return MATRICULA_INVALIDA;
+                break;
+            }
+        }
         getchar();
         printf("Digite o nome:\n");
         fgets(nome, 50, stdin);
@@ -541,7 +566,6 @@ int cadastrarProf(int contProf, Professor listaProf[]){
     if(matricula < 0){
         return MATRICULA_INVALIDA;
     }
-
         listaProf[contProf].matricula = matricula;
         listaProf[contProf].sexo = sexo;
         listaProf[contProf].ativo = 1;
@@ -676,13 +700,18 @@ int cadastrarDisciplina(int contDisc, Disciplina listaDisc[], int contProf, Prof
     }  
     else{
         char nome[50];
-        char profNome[50];
         int semestre;
         int matricula;
         int codigo;
         int achou = 0;
         printf("Digite o codigo:\n");  
         scanf("%d", &codigo);
+        for(int i = 0; i < contDisc; i++){
+            if(codigo == listaDisc[i].codigo){
+                return MATRICULA_INVALIDA;
+                break;
+            }
+        }
         getchar();
         printf("Digite o nome:\n");
         fgets(nome, 50, stdin);
@@ -702,17 +731,16 @@ int cadastrarDisciplina(int contDisc, Disciplina listaDisc[], int contProf, Prof
         if(!achou){
             return MATRICULA_INEXISTENTE;
         }
-        else if(codigo < 0){
+        if(codigo < 0){
                 return MATRICULA_INVALIDA;
             }
-        else{
             listaDisc[contDisc].codigo = codigo;
             listaDisc[contDisc].semestre = semestre;
             listaDisc[contDisc].ativo = 1;
             strcpy(listaDisc[contDisc].nome, nome);
             contDisc++;
             return CAD_SUCESSO;
-        }
+
     }
 }
 void listarDisciplina(int contDisc, Disciplina listaDisc[], int contProf, Professor listaProf[]){
@@ -784,6 +812,73 @@ int excluirDisciplina(int contDisc, Disciplina listaDisc[], int contProf, Profes
     printf("Excluindo Disciplina...\n");
     int codigo;
     printf("Digite o codigo\n");
+    scanf("%d", &codigo);
+    int achou = 0;
+    if(codigo < 0){
+        return MATRICULA_INVALIDA;
+    }
+    else{
+        for(int i = 0; i <= contDisc - 1; i++){ 
+            if(codigo == listaDisc[i].codigo){
+                //exclusao logica
+                listaDisc[i].ativo = -1;
+                for(int j = i; j < contDisc - 1; j++){ //shift
+                    listaDisc[j].codigo = listaDisc[j+1].codigo;
+                    listaDisc[j].semestre = listaDisc[j+1].semestre;
+                    listaDisc[j].prof = listaDisc[j+1].prof;
+                    strcpy(listaDisc[j].nome, listaDisc[j+1].nome);
+                }
+
+                achou = 1;
+                break;
+            }
+        }
+
+        if(achou)
+            return EXCLUSAO_SUCESSO;
+        else   
+            return MATRICULA_INEXISTENTE;
+    }
+}
+int inserirAlunoDisciplina(int contDisc, Disciplina listaDisc[], int contAluno, Aluno listaAluno[], int contInserirAluno){
+    printf("Inserindo Aluno...\n");
+    int matricula;
+    printf("Digite a matricula\n");
+    scanf("%d", &matricula);
+    printf("Digite o codigo da disciplina\n");
+    int codigo;
+    scanf("%d", &codigo);
+    
+    int achou = 0;
+    int posicaoDisc;
+    if(matricula < 0 || contDisc <= 0){
+        return MATRICULA_INVALIDA;
+    }
+    else{
+        for(int j = 0; j < contDisc; j++){
+            if(codigo == listaDisc[j].codigo){
+                posicaoDisc = j;
+                break;
+            }
+        }
+        for(int i = 0; i < contAluno; i++){ 
+            if(matricula == listaAluno[i].matricula){
+                achou = 1;
+                listaDisc[posicaoDisc].alunos[contInserirAluno] = listaAluno[i];
+                break;
+                }
+            }
+        }
+
+    if(!achou)
+        return MATRICULA_INEXISTENTE;
+    else
+        return CAD_SUCESSO;
+}
+int excluirAlunoDisciplina(int contDisc, Disciplina listaDisc[], int contAluno, Aluno listaAluno[], int contInserirAluno){
+    printf("Excluindo Aluno da Disciplina...\n");
+    int codigo;
+    printf("Digite o codigo da discipkl\n");
     scanf("%d", &codigo);
     int achou = 0;
     if(codigo < 0){
