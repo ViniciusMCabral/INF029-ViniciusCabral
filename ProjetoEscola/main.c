@@ -9,6 +9,7 @@
 #define ATUALIZACAO_SUCESSO -4
 #define MATRICULA_INEXISTENTE -5
 #define EXCLUSAO_SUCESSO -6
+#define CODIGO_INVALIDO -7
 
 
 typedef struct data{
@@ -65,7 +66,7 @@ int inserirAlunoDisciplina(int contDisc, Disciplina listaDisc[], int contAluno, 
 int excluirAlunoDisciplina(int contDisc, Disciplina listaDisc[], int posicaoDisc);
 int menuRelatorio();
 int listarUmaDisc(int contDisc, Disciplina listaDisc[], int posicaoDisc);
-int listarAlunosPsexo(int contAluno, Aluno listaAluno);
+int listarAlunosPsexo(int contAluno, Aluno listaAluno[]);
 
 int main(void){
 
@@ -311,6 +312,9 @@ int main(void){
                             else if(retorno == MATRICULA_INEXISTENTE){
                                 printf("Esse Aluno nao foi cadastrado\n");
                             }
+                            else if(retorno == CODIGO_INVALIDO){
+                                printf("Codigo da disciplina digitado errado\n");
+                            }
                             else{
                                 printf("Aluno cadastrado na disciplina com sucesso\n");
                                 listaDisc[posicaoDisc].contador++;
@@ -382,7 +386,7 @@ int main(void){
                         break;
 
                 }
-                
+
             }while(opcaoRelatorio != 0);
             default:
 
@@ -914,8 +918,8 @@ int inserirAlunoDisciplina(int contDisc, Disciplina listaDisc[], int contAluno, 
     printf("Digite o codigo da disciplina\n");
     int codigo;
     scanf("%d", &codigo);
-    
     int achou = 0;
+    int achouCodigo = 0;
     if(matricula < 0 || contDisc <= 0){
         return MATRICULA_INVALIDA;
     }
@@ -923,10 +927,12 @@ int inserirAlunoDisciplina(int contDisc, Disciplina listaDisc[], int contAluno, 
         for(int j = 0; j < contDisc; j++){
             if(codigo == listaDisc[j].codigo){
                 posicaoDisc = j;
+                achouCodigo = 1;
                 break;
             }
         }
-        for(int i = 0; i < contAluno; i++){ 
+        if(achouCodigo){
+            for(int i = 0; i < contAluno; i++){ 
             if(matricula == listaAluno[i].matricula){
                 achou = 1;
                 listaDisc[posicaoDisc].alunos[listaDisc[posicaoDisc].contador] = listaAluno[i];
@@ -934,6 +940,10 @@ int inserirAlunoDisciplina(int contDisc, Disciplina listaDisc[], int contAluno, 
                 }
             }
         }
+        else{
+            return CODIGO_INVALIDO;
+        }
+    }
 
     if(!achou)
         return MATRICULA_INEXISTENTE;
@@ -1021,10 +1031,10 @@ int listarUmaDisc(int contDisc, Disciplina listaDisc[], int posicaoDisc){
                 printf("Aluno %d: %s\n", i+1, listaDisc[posicaoDisc].alunos[i].nome);
             }
         }
-        
+
     }
 }
-int listarAlunosPsexo(int contAluno, Aluno listaAluno){
+int listarAlunosPsexo(int contAluno, Aluno listaAluno[]){
     printf("Listando alunos por sexo(M/F)\n");
     printf("Digite o sexo\n");
     char sexo;
@@ -1047,5 +1057,11 @@ int listarAlunosPsexo(int contAluno, Aluno listaAluno){
                 }
             }
         }
+        else{
+            printf("Sexo digitado errado\n");
+        }
     }
+}
+int listarAlunosOrdenados(int contAluno, Aluno listaAluno[]){
+    
 }
