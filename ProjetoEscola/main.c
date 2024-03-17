@@ -66,11 +66,13 @@ int excluirDisciplina(int contDisc, Disciplina listaDisc[], int contProf, Profes
 int inserirAlunoDisciplina(int contDisc, Disciplina listaDisc[], int contAluno, Aluno listaAluno[], int posicaoDisc);
 int excluirAlunoDisciplina(int contDisc, Disciplina listaDisc[], int posicaoDisc);
 int menuRelatorio();
-int listarUmaDisc(int contDisc, Disciplina listaDisc[], int posicaoDisc, Professor listaProf[], int contProf);
-int listarAlunosPsexo(int contAluno, Aluno listaAluno[]);
-int listarAlunosOrdenados(int contAluno, Aluno listaAluno[]);
+void listarUmaDisc(int contDisc, Disciplina listaDisc[], int posicaoDisc, Professor listaProf[], int contProf);
+void listarAlunosPsexo(int contAluno, Aluno listaAluno[]);
 void bubbleSortPorNome(Aluno listaAluno[], int contAluno);
 void listarAlunosOrdenadosPorNome(Aluno listaAluno[], int contAluno);
+void bubbleSortPorDataNascimento(Aluno listaAluno[], int contAluno);
+void listarAlunosOrdenadosPorDataNascimento(Aluno listaAluno[], int contAluno);
+void listarProfessorPsexo(int contProf, Professor listaProf[]);
 
 int main(void){
 
@@ -369,8 +371,10 @@ int main(void){
                         listarAlunosOrdenadosPorNome(listaAluno, contAluno);
                         break;
                     case 4:
+                        listarAlunosOrdenadosPorDataNascimento(listaAluno, contAluno);
                         break;
                     case 5:
+                        listarProfessorPsexo(contProf, listaProf);
                         break;
                     case 6:
                         break;
@@ -1010,7 +1014,7 @@ int menuRelatorio(){
     scanf("%d", &opcaoRelatorio);
     return opcaoRelatorio;
 }
-int listarUmaDisc(int contDisc, Disciplina listaDisc[], int posicaoDisc, Professor listaProf[], int contProf){
+void listarUmaDisc(int contDisc, Disciplina listaDisc[], int posicaoDisc, Professor listaProf[], int contProf){
     printf("Listando uma Disciplina especifica...\n");
     printf("Digite o codigo da disciplina\n");
     int codigo;
@@ -1042,7 +1046,7 @@ int listarUmaDisc(int contDisc, Disciplina listaDisc[], int posicaoDisc, Profess
 
     }
 }
-int listarAlunosPsexo(int contAluno, Aluno listaAluno[]){
+void listarAlunosPsexo(int contAluno, Aluno listaAluno[]){
     printf("Listando alunos por sexo(M/F)\n");
     printf("Digite o sexo\n");
     char sexo;
@@ -1095,6 +1099,65 @@ void listarAlunosOrdenadosPorNome(Aluno listaAluno[], int contAluno){
         
         for (int i = 0; i < contAluno; i++) {
             printf("%s\n", listaAluno[i].nome);
+        }
+    }
+}
+void bubbleSortPorDataNascimento(Aluno listaAluno[], int contAluno){
+    for (int i = 0; i < contAluno - 1; i++) {
+        for (int j = 0; j < contAluno - i - 1; j++) {
+            if (listaAluno[j].dataNascimento.ano > listaAluno[j + 1].dataNascimento.ano ||
+                (listaAluno[j].dataNascimento.ano == listaAluno[j + 1].dataNascimento.ano &&
+                listaAluno[j].dataNascimento.mes > listaAluno[j + 1].dataNascimento.mes) ||
+                (listaAluno[j].dataNascimento.ano == listaAluno[j + 1].dataNascimento.ano &&
+                listaAluno[j].dataNascimento.mes == listaAluno[j + 1].dataNascimento.mes &&
+                listaAluno[j].dataNascimento.dia > listaAluno[j + 1].dataNascimento.dia)) {
+                Aluno temp = listaAluno[j];
+                listaAluno[j] = listaAluno[j + 1];
+                listaAluno[j + 1] = temp;
+            }
+        }
+    }
+}
+void listarAlunosOrdenadosPorDataNascimento(Aluno listaAluno[], int contAluno){
+    printf("\nAlunos Ordenados por Data de nascimento\n");
+    if (contAluno == 0) {
+        printf("Lista de alunos vazia\n");
+    } 
+    else{
+
+        bubbleSortPorDataNascimento(listaAluno, contAluno);
+
+
+        for (int i = 0; i < contAluno; i++) {
+            printf("%s\n", listaAluno[i].nome);
+        }
+    }
+}
+void listarProfessorPsexo(int contProf, Professor listaProf[]){
+    printf("Listando Professores por sexo(M/F)\n");
+    printf("Digite o sexo\n");
+    char sexo;
+    scanf(" %c", &sexo);
+    if(contProf == 0){
+        printf("Lista vazia\n");
+    }
+    else{
+        if(sexo == 'M' || sexo == 'm'){
+            for(int i = 0; i < contProf; i++){
+                if(listaProf[i].sexo == 'M' || listaProf[i].sexo == 'm'){
+                    printf("%s\n", listaProf[i].nome);
+                }
+            }
+        }
+        else if(sexo == 'F' || sexo == 'f'){
+            for(int i = 0; i < contProf; i++){
+                if(listaProf[i].sexo == 'F' || listaProf[i].sexo == 'f'){
+                    printf("%s\n", listaProf[i].nome);
+                }
+            }
+        }
+        else{
+            printf("Sexo digitado errado\n");
         }
     }
 }
