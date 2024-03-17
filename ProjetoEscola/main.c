@@ -35,13 +35,14 @@ typedef struct pro {
     char cpf[20];
     Data dataNascimento;
 } Professor;
-
+//no struc disciplina colocar 'int matriculaProfessor' no lugar de 'Professor prof', porque se usar da segunda maneira tera informacoes repetidas
+//use listaProf[] quando for imprimir o nome do professor
 typedef struct disc {
     char nome[50];
     int semestre;
     int codigo;
     int ativo;
-    Professor prof;
+    int matriculaProf;
     Aluno alunos[TamAluno];
     int contador;
 } Disciplina;
@@ -59,14 +60,15 @@ int atualizarProf(int contProf, Professor listaProf[]);
 int excluirProf(int contProf, Professor listaProf[]);
 int menuDisciplina();
 int cadastrarDisciplina(int contDisc, Disciplina listaDisc[], int contProf, Professor listaProf[]);
-void listarDisciplina(int contDisc, Disciplina listaDisc[], int contProf, Professor listaProf[]);
 int atualizarDisciplina(int contDisc, Disciplina listaDisc[], int contProf, Professor listaProf[]);
+void listarDisciplina(int contDisc, Disciplina listaDisc[], int contProf, Professor listaProf[]);
 int excluirDisciplina(int contDisc, Disciplina listaDisc[], int contProf, Professor listaProf[]);
 int inserirAlunoDisciplina(int contDisc, Disciplina listaDisc[], int contAluno, Aluno listaAluno[], int posicaoDisc);
 int excluirAlunoDisciplina(int contDisc, Disciplina listaDisc[], int posicaoDisc);
 int menuRelatorio();
-int listarUmaDisc(int contDisc, Disciplina listaDisc[], int posicaoDisc);
+int listarUmaDisc(int contDisc, Disciplina listaDisc[], int posicaoDisc, Professor listaProf[], int contProf);
 int listarAlunosPsexo(int contAluno, Aluno listaAluno[]);
+int listarAlunosOrdenados(int contAluno, Aluno listaAluno[]);
 
 int main(void){
 
@@ -85,7 +87,6 @@ int main(void){
     int semestre;
     char profNome[50];
     int posicaoDisc;
-
     for(int i = 0; i < TamDisc; i++){
         listaDisc[i].contador = 0;
     }
@@ -275,7 +276,6 @@ int main(void){
 
                         case 2:
                             listarDisciplina(contDisc, listaDisc, contProf, listaProf);
-
                             break;
 
                         case 3:
@@ -356,7 +356,7 @@ int main(void){
                         break;
 
                     case 1:
-                        listarUmaDisc(contDisc, listaDisc, posicaoDisc);
+                        listarUmaDisc(contDisc, listaDisc, posicaoDisc, listaProf, contProf);
                         break;
 
                     case 2:
@@ -364,6 +364,7 @@ int main(void){
                         break;
 
                     case 3:
+                        listarAlunosOrdenados(contAluno, listaAluno);
                         break;
                     case 4:
                         break;
@@ -794,7 +795,7 @@ int cadastrarDisciplina(int contDisc, Disciplina listaDisc[], int contProf, Prof
         for(int i = 0; i < contProf; i++){
             if(matricula == listaProf[i].matricula){
                 achou = 1;
-                listaDisc[contDisc].prof = listaProf[i];
+                listaDisc[contDisc].matriculaProf = listaProf[i].matricula;
                 break;
             }
         }
@@ -826,9 +827,13 @@ void listarDisciplina(int contDisc, Disciplina listaDisc[], int contProf, Profes
                 printf("Codigo: %d\n", listaDisc[i].codigo);
                 printf("Nome: %s\n", listaDisc[i].nome);
                 printf("Semestre: %d\n", listaDisc[i].semestre);
-                printf("Nome do professor: %s\n", listaDisc[i].prof.nome);
-            }
-        } 
+                for(int j = 0; j < contProf; j++){
+                    if(listaDisc[i].matriculaProf == listaProf[j].matricula){
+                        printf("Professor: %s\n", listaProf[j].nome);
+                    }
+                }
+            } 
+        }
     }
 }
 int atualizarDisciplina(int contDisc, Disciplina listaDisc[], int contProf, Professor listaProf[]){
@@ -857,12 +862,10 @@ int atualizarDisciplina(int contDisc, Disciplina listaDisc[], int contProf, Prof
             getchar();
             printf("Digite a nova matricula do professor:\n");
             int novaMatricula;
-            int achouProf = 0;
             scanf("%d", &novaMatricula);
             for(int j = 0; j < contProf; j++){
                 if(novaMatricula == listaProf[j].matricula){
-                    achouProf = 1;
-                    listaDisc[i].prof = listaProf[j];
+                    listaDisc[i].matriculaProf = listaProf[j].matricula;
                     break;
                 }
             }
@@ -895,7 +898,6 @@ int excluirDisciplina(int contDisc, Disciplina listaDisc[], int contProf, Profes
                 for(int j = i; j < contDisc - 1; j++){ //shift
                     listaDisc[j].codigo = listaDisc[j+1].codigo;
                     listaDisc[j].semestre = listaDisc[j+1].semestre;
-                    listaDisc[j].prof = listaDisc[j+1].prof;
                     strcpy(listaDisc[j].nome, listaDisc[j+1].nome);
                 }
 
@@ -1006,7 +1008,7 @@ int menuRelatorio(){
     scanf("%d", &opcaoRelatorio);
     return opcaoRelatorio;
 }
-int listarUmaDisc(int contDisc, Disciplina listaDisc[], int posicaoDisc){
+int listarUmaDisc(int contDisc, Disciplina listaDisc[], int posicaoDisc, Professor listaProf[], int contProf){
     printf("Listando uma Disciplina especifica...\n");
     printf("Digite o codigo da disciplina\n");
     int codigo;
@@ -1025,7 +1027,11 @@ int listarUmaDisc(int contDisc, Disciplina listaDisc[], int posicaoDisc){
             printf("Codigo: %d\n", listaDisc[posicaoDisc].codigo);
             printf("Nome: %s\n", listaDisc[posicaoDisc].nome);
             printf("Semestre: %d\n", listaDisc[posicaoDisc].semestre);
-            printf("Nome do professor: %s\n", listaDisc[posicaoDisc].prof.nome);
+            for(int j = 0; j < contProf; j++){
+                if(listaDisc[posicaoDisc].matriculaProf == listaProf[j].matricula){
+                    printf("Professor: %s\n", listaProf[j].nome);
+                }
+            }
             printf("Alunos Matriculados:\n");
             for(int i = 0; i < listaDisc[posicaoDisc].contador; i++){
                 printf("Aluno %d: %s\n", i+1, listaDisc[posicaoDisc].alunos[i].nome);
@@ -1063,5 +1069,23 @@ int listarAlunosPsexo(int contAluno, Aluno listaAluno[]){
     }
 }
 int listarAlunosOrdenados(int contAluno, Aluno listaAluno[]){
-    
+    printf("Ordenando os alunos em ordem alfabetica\n");
+    char temp[50];
+    if(contAluno == 0){
+        printf("Lista vazia\n");
+    }
+    else{
+        for(int i = 0; i < contAluno; i++){
+            int retorno = strcmp(listaAluno[i].nome, listaAluno[i+1].nome);
+            if(retorno > 0){
+                strcpy(listaAluno[i].nome, temp);
+                strcpy(listaAluno[i+1].nome, listaAluno[i].nome);
+                strcpy(temp, listaAluno[i+1].nome);
+                //strcpy(listaDisc[j].nome, listaDisc[j+1].nome);
+            }
+        }
+    }
+    for(int i = 0; i < contAluno; i++){
+        printf("%s\n", listaAluno[i].nome);
+    }
 }
