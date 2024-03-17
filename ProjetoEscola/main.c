@@ -69,6 +69,8 @@ int menuRelatorio();
 int listarUmaDisc(int contDisc, Disciplina listaDisc[], int posicaoDisc, Professor listaProf[], int contProf);
 int listarAlunosPsexo(int contAluno, Aluno listaAluno[]);
 int listarAlunosOrdenados(int contAluno, Aluno listaAluno[]);
+void bubbleSortPorNome(Aluno listaAluno[], int contAluno);
+void listarAlunosOrdenadosPorNome(Aluno listaAluno[], int contAluno);
 
 int main(void){
 
@@ -364,7 +366,7 @@ int main(void){
                         break;
 
                     case 3:
-                        listarAlunosOrdenados(contAluno, listaAluno);
+                        listarAlunosOrdenadosPorNome(listaAluno, contAluno);
                         break;
                     case 4:
                         break;
@@ -1068,24 +1070,31 @@ int listarAlunosPsexo(int contAluno, Aluno listaAluno[]){
         }
     }
 }
-int listarAlunosOrdenados(int contAluno, Aluno listaAluno[]){
-    printf("Ordenando os alunos em ordem alfabetica\n");
-    char temp[50];
-    if(contAluno == 0){
-        printf("Lista vazia\n");
-    }
-    else{
-        for(int i = 0; i < contAluno; i++){
-            int retorno = strcmp(listaAluno[i].nome, listaAluno[i+1].nome);
-            if(retorno > 0){
-                strcpy(listaAluno[i].nome, temp);
-                strcpy(listaAluno[i+1].nome, listaAluno[i].nome);
-                strcpy(temp, listaAluno[i+1].nome);
-                //strcpy(listaDisc[j].nome, listaDisc[j+1].nome);
+void bubbleSortPorNome(Aluno listaAluno[], int contAluno){
+    for (int i = 0; i < contAluno - 1; i++) {
+        for (int j = 0; j < contAluno - i - 1; j++) {
+            if (strcmp(listaAluno[j].nome, listaAluno[j + 1].nome) > 0) {
+                Aluno temp = listaAluno[j];
+                listaAluno[j] = listaAluno[j + 1];
+                listaAluno[j + 1] = temp;
             }
         }
     }
-    for(int i = 0; i < contAluno; i++){
-        printf("%s\n", listaAluno[i].nome);
+}
+
+
+void listarAlunosOrdenadosPorNome(Aluno listaAluno[], int contAluno){
+    printf("\nAlunos Ordenados por Nome\n");
+    if (contAluno == 0) {
+        printf("Lista de alunos vazia\n");
+    } 
+    else{
+        
+        bubbleSortPorNome(listaAluno, contAluno);
+
+        
+        for (int i = 0; i < contAluno; i++) {
+            printf("%s\n", listaAluno[i].nome);
+        }
     }
 }
