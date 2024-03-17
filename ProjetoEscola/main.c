@@ -75,6 +75,7 @@ void listarAlunosOrdenadosPorDataNascimento(Aluno listaAluno[], int contAluno);
 void listarProfessorPsexo(int contProf, Professor listaProf[]);
 void listarProfessoresOrdenadosPorNome(Professor listaProf[], int contProf);
 void listarProfessoresOrdenadosPorDataNascimento(Professor listaProf[], int contProf);
+void listarAniversariantesMes(Professor listaProf[], int contProf, int mes, int contAluno, Aluno listaAluno[]);
 
 int main(void){
 
@@ -93,6 +94,7 @@ int main(void){
     int semestre;
     char profNome[50];
     int posicaoDisc;
+    int mesDesejado;
     for(int i = 0; i < TamDisc; i++){
         listaDisc[i].contador = 0;
     }
@@ -385,6 +387,9 @@ int main(void){
                         listarProfessoresOrdenadosPorDataNascimento(listaProf, contProf);
                         break;
                     case 8:
+                        printf("Digite o mês desejado: ");
+                        scanf("%d", &mesDesejado);
+                        listarAniversariantesMes(listaProf, contProf, mesDesejado, contAluno, listaAluno);
                         break;
                     case 9:
                         break;
@@ -1195,3 +1200,32 @@ void listarProfessoresOrdenadosPorDataNascimento(Professor listaProf[], int cont
         }
     }
 }
+void listarAniversariantesMes(Professor listaProf[], int contProf, int mes, int contAluno, Aluno listaAluno[]){
+    printf("\nAniversariantes do Mes\n");
+    if(contProf == 0 && contAluno == 0){
+        printf("Lista de professores vazia\n");
+    } 
+    else{
+        for(int i = 0; i < contProf; i++){
+            if(listaProf[i].dataNascimento.mes == mes) {
+                printf("-----\n");
+                printf("Matricula: %d\n", listaProf[i].matricula);
+                printf("Nome: %s\n", listaProf[i].nome);
+                printf("Data de Nascimento: %02d/%02d/%04d\n", listaProf[i].dataNascimento.dia,
+                    listaProf[i].dataNascimento.mes, listaProf[i].dataNascimento.ano);
+            }
+        }
+        for(int i = 0; i < contAluno; i++){
+            if(listaAluno[i].dataNascimento.mes == mes) {
+                printf("-----\n");
+                printf("Matricula: %d\n", listaAluno[i].matricula);
+                printf("Nome: %s\n", listaAluno[i].nome);
+                printf("Data de Nascimento: %02d/%02d/%04d\n", listaAluno[i].dataNascimento.dia,
+                    listaAluno[i].dataNascimento.mes, listaAluno[i].dataNascimento.ano);
+            }
+        }
+        printf("-----\n\n");
+    }
+}
+
+
