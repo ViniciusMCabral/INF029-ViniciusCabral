@@ -73,6 +73,8 @@ void listarAlunosOrdenadosPorNome(Aluno listaAluno[], int contAluno);
 void bubbleSortPorDataNascimento(Aluno listaAluno[], int contAluno);
 void listarAlunosOrdenadosPorDataNascimento(Aluno listaAluno[], int contAluno);
 void listarProfessorPsexo(int contProf, Professor listaProf[]);
+void listarProfessoresOrdenadosPorNome(Professor listaProf[], int contProf);
+void listarProfessoresOrdenadosPorDataNascimento(Professor listaProf[], int contProf);
 
 int main(void){
 
@@ -377,8 +379,10 @@ int main(void){
                         listarProfessorPsexo(contProf, listaProf);
                         break;
                     case 6:
+                        listarProfessoresOrdenadosPorNome(listaProf, contProf);
                         break;
                     case 7:
+                        listarProfessoresOrdenadosPorDataNascimento(listaProf, contProf);
                         break;
                     case 8:
                         break;
@@ -1158,6 +1162,36 @@ void listarProfessorPsexo(int contProf, Professor listaProf[]){
         }
         else{
             printf("Sexo digitado errado\n");
+        }
+    }
+}
+void listarProfessoresOrdenadosPorNome(Professor listaProf[], int contProf){
+    printf("\nAlunos Ordenados por Nome\n");
+    if (contProf == 0) {
+        printf("Lista de alunos vazia\n");
+    } 
+    else{
+
+        bubbleSortPorNome(listaProf, contProf);
+
+
+        for (int i = 0; i < contProf; i++) {
+            printf("%s\n", listaProf[i].nome);
+        }
+    }
+}
+void listarProfessoresOrdenadosPorDataNascimento(Professor listaProf[], int contProf){
+    printf("\nProfessores Ordenados por Data de Nascimento\n");
+    if (contProf == 0) {
+        printf("Lista de professores vazia\n");
+    } 
+    else {
+        // Ordena os professores por data de nascimento
+        bubbleSortPorDataNascimento(listaProf, contProf);
+
+        // Lista os professores ordenados
+        for (int i = 0; i < contProf; i++) {
+            printf("%s\n", listaProf[i].nome);    
         }
     }
 }
