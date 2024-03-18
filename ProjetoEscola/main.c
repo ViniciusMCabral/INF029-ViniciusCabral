@@ -35,8 +35,7 @@ typedef struct pro {
     char cpf[20];
     Data dataNascimento;
 } Professor;
-//no struc disciplina colocar 'int matriculaProfessor' no lugar de 'Professor prof', porque se usar da segunda maneira tera informacoes repetidas
-//use listaProf[] quando for imprimir o nome do professor
+
 typedef struct disc {
     char nome[50];
     int semestre;
@@ -76,7 +75,7 @@ void listarProfessorPsexo(int contProf, Professor listaProf[]);
 void listarProfessoresOrdenadosPorNome(Professor listaProf[], int contProf);
 void listarProfessoresOrdenadosPorDataNascimento(Professor listaProf[], int contProf);
 void listarAniversariantesMes(Professor listaProf[], int contProf, int mes, int contAluno, Aluno listaAluno[]);
-
+void listarPessoasPorBusca(Professor listaProf[], int contProf, char busca[], int contAluno, Aluno listaAluno[]);
 int main(void){
 
     Aluno listaAluno[TamAluno];
@@ -392,6 +391,22 @@ int main(void){
                         listarAniversariantesMes(listaProf, contProf, mesDesejado, contAluno, listaAluno);
                         break;
                     case 9:
+
+                        char busca[100];
+                        getchar();
+                        printf("Digite a string de busca (minimo tres letras): ");
+                        fgets(busca, 100, stdin);
+                        int tamString = strlen(busca) -1;
+                        busca[tamString] = '\0';
+                        if (strlen(busca) < 3)
+                        {
+                            printf("A busca deve conter no minimo tres letras.\n");
+                        }
+                        else
+                        {
+                            listarPessoasPorBusca(listaProf, contProf, busca, contAluno, listaAluno);
+                        }
+
                         break;
                     case 10:
                         break;                
@@ -1227,5 +1242,29 @@ void listarAniversariantesMes(Professor listaProf[], int contProf, int mes, int 
         printf("-----\n\n");
     }
 }
-
+void listarPessoasPorBusca(Professor listaProf[], int contProf, char busca[], int contAluno, Aluno listaAluno[]){
+    printf("\nResultado da Busca: %s\n", busca);
+    if(contProf == 0 && contAluno == 0){
+        printf("Lista de pessoas vazia\n");
+    } else{
+        int encontrou = 0;
+        for(int i = 0; i < contProf; i++){
+            if(strstr(listaProf[i].nome, busca) != NULL){
+                printf("Matricula: %d\n", listaProf[i].matricula);
+                printf("Nome: %s\n", listaProf[i].nome);
+                encontrou = 1;
+            }
+        }
+        for(int i = 0; i < contAluno; i++){
+            if(strstr(listaAluno[i].nome, busca) != NULL){
+                printf("Matricula: %d\n", listaAluno[i].matricula);
+                printf("Nome: %s\n", listaAluno[i].nome);
+                encontrou = 1;
+            }
+        }
+        if(!encontrou){
+            printf("Nenhuma pessoa encontrada com %s\n", busca);
+        }
+    }
+}
 
