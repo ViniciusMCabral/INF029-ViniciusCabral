@@ -10,7 +10,7 @@
 #define MATRICULA_INEXISTENTE -5
 #define EXCLUSAO_SUCESSO -6
 #define CODIGO_INVALIDO -7
-
+#define SEXO_INVALIDO -8
 
 typedef struct data{
     int dia;
@@ -128,10 +128,15 @@ int main(void){
 
                         case 1:
                             int retorno = cadastrarAluno(contAluno, listaAluno);
-                            if(retorno == LISTA_CHEIA)
+                            if(retorno == LISTA_CHEIA){
                                 printf("Lista de alunos cheia\n");
-                            else if(retorno == MATRICULA_INVALIDA)
+                            }
+                            else if(retorno == MATRICULA_INVALIDA){
                                 printf("Matricula invalida, numero digitado incorreto ou numero de matricula ja existente\n");
+                            }
+                            else if(retorno == SEXO_INVALIDO){
+                                printf("Sexo digitado errado\n");
+                            }
                             else{
                                 printf("Aluno cadastrado com sucesso\n");
                                 contAluno++;
@@ -150,6 +155,9 @@ int main(void){
                             }
                             else if(retorno == MATRICULA_INEXISTENTE){
                                 printf("Matricula invalida\n");
+                            }
+                            else if(retorno == SEXO_INVALIDO){
+                                printf("Sexo digitado errado\n");
                             }
                             else{
                                 printf("Aluno atualizado com sucesso\n");
@@ -198,10 +206,15 @@ int main(void){
 
                         case 1:
                             int retorno = cadastrarProf(contProf, listaProf);
-                            if(retorno == LISTA_CHEIA)
+                            if(retorno == LISTA_CHEIA){
                                 printf("Lista de professores cheia\n");
-                            else if(retorno == MATRICULA_INVALIDA)
+                            }
+                            else if(retorno == MATRICULA_INVALIDA){
                                 printf("Matricula invalida, numero digitado incorreto ou numero de matricula ja existente\n");
+                            }
+                            else if(retorno == SEXO_INVALIDO){
+                                printf("Sexo digitado errado\n");
+                            }
                             else{
                                 printf("Professor cadastrado com sucesso\n");
                                 contProf++;
@@ -220,6 +233,9 @@ int main(void){
                             }
                             else if(retorno == MATRICULA_INEXISTENTE){
                                 printf("Matricula inexistente\n");
+                            }
+                            else if(retorno == SEXO_INVALIDO){
+                                printf("Sexo digitado errado\n");
                             }
                             else{
                                 printf("Professor atualizado com sucesso\n");
@@ -477,6 +493,9 @@ int cadastrarAluno(int contAluno, Aluno listaAluno[]){
         nome[tamString] = '\0';
         printf("Digite o sexo(M/F):\n");
         scanf(" %c", &sexo);
+        if(sexo != 'M' && sexo != 'm' && sexo != 'F' && sexo != 'f'){
+            return SEXO_INVALIDO;
+        }
         getchar();
         printf("Digite o CPF:\n");
         fgets(cpf, 20, stdin);
@@ -546,15 +565,19 @@ int atualizarAluno(int contAluno, Aluno listaAluno[]){
             fgets(novoNome, 50, stdin);
             int tamString = strlen(novoNome) -1;
             novoNome[tamString] = '\0';
+            printf("Digite o novo sexo:\n");
+            char novoSexo;
+            scanf(" %c", &novoSexo);
+            if(novoSexo != 'M' && novoSexo != 'm' && novoSexo != 'F' && novoSexo != 'f'){
+                return SEXO_INVALIDO;
+                break;
+            }
             getchar();
             printf("Digite o novo CPF:\n");
             char novoCpf[20];
             fgets(novoCpf, 20, stdin);
             tamString = strlen(novoCpf) -1;
             novoCpf[tamString] = '\0';
-            printf("Digite o novo sexo:\n");
-            char novoSexo;
-            scanf(" %c", &novoSexo);
             printf("Digite a nova data de nascimento:\n");
             printf("Dia:\n");
             scanf("%d", &listaAluno[i].dataNascimento.dia);
@@ -647,6 +670,9 @@ int cadastrarProf(int contProf, Professor listaProf[]){
         nome[tamString] = '\0';
         printf("Digite o sexo(M/F):\n");
         scanf(" %c", &sexo);
+        if(sexo != 'M' && sexo != 'm' && sexo != 'F' && sexo != 'f'){
+            return SEXO_INVALIDO;
+        }
         getchar();
         printf("Digite o CPF:\n");
         fgets(cpf, 20, stdin);
@@ -716,15 +742,19 @@ int atualizarProf(int contProf, Professor listaProf[]){
             fgets(novoNome, 50, stdin);
             int tamString = strlen(novoNome) -1;
             novoNome[tamString] = '\0';
+            printf("Digite o novo sexo:\n");
+            char novoSexo;
+            scanf(" %c", &novoSexo);
+            if(novoSexo != 'M' && novoSexo != 'm' && novoSexo != 'F' && novoSexo != 'f'){
+                return SEXO_INVALIDO;
+                break;
+            }
             getchar();
             printf("Digite o novo CPF:\n");
             char novoCpf[20];
             fgets(novoCpf, 20, stdin);
             tamString = strlen(novoCpf) -1;
             novoCpf[tamString] = '\0';
-            printf("Digite o novo sexo:\n");
-            char novoSexo;
-            scanf(" %c", &novoSexo);
             printf("Digite a nova data de nascimento:\n");
             printf("Dia:\n");
             scanf("%d", &listaProf[i].dataNascimento.dia);
@@ -1267,4 +1297,5 @@ void listarPessoasPorBusca(Professor listaProf[], int contProf, char busca[], in
         }
     }
 }
+
 
