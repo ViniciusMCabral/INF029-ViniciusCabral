@@ -78,7 +78,8 @@ void listarProfessoresOrdenadosPorNome(Professor listaProf[], int contProf);
 void listarProfessoresOrdenadosPorDataNascimento(Professor listaProf[], int contProf);
 void listarAniversariantesMes(Professor listaProf[], int contProf, int mes, int contAluno, Aluno listaAluno[]);
 void listarPessoasPorBusca(Professor listaProf[], int contProf, char busca[], int contAluno, Aluno listaAluno[]);
-int listarAlunosMenosTresDisciplinas(Aluno listaAluno[], int contAluno);
+void listarAlunosMenosTresDisciplinas(Aluno listaAluno[], int contAluno);
+void listarDisciplinasExcedentes(Disciplina listaDisc[], int contDisc, Professor listaProf[], int contProf);
 
 int main(void){
 
@@ -440,6 +441,7 @@ int main(void){
                         listarAlunosMenosTresDisciplinas(listaAluno, contAluno);
                         break;                
                     case 11:
+                        listarDisciplinasExcedentes(listaDisc, contDisc, listaProf, contProf);
                         break;
                     default:
                         printf("\nOpção Inválida\n");
@@ -1441,7 +1443,7 @@ void listarPessoasPorBusca(Professor listaProf[], int contProf, char busca[], in
         }
     }
 }
-int listarAlunosMenosTresDisciplinas(Aluno listaAluno[], int contAluno){
+void listarAlunosMenosTresDisciplinas(Aluno listaAluno[], int contAluno){
     printf("--------------------------------------------------\n");
     printf("\nAlunos Matriculados em Menos de 3 Disciplinas:\n");
     if(contAluno == 0){
@@ -1460,6 +1462,32 @@ int listarAlunosMenosTresDisciplinas(Aluno listaAluno[], int contAluno){
 
     }
     
+}
+void listarDisciplinasExcedentes(Disciplina listaDisc[], int contDisc, Professor listaProf[], int contProf){
+    printf("\nDisciplinas com Mais de 40 Vagas\n");
+    if(contDisc == 0 || contProf == 0){
+        printf("Lista de disciplinas ou de professores vazia\n");
+    } 
+    else{
+        int achou = 0;
+        for(int i = 0; i < contDisc; i++){
+            if(listaDisc[i].contador > 40){
+                printf("Nome da Disciplina: %s\n", listaDisc[i].nome);
+                printf("Vagas: %d\n", listaDisc[i].contador);
+                for(int j = 0; j < contProf; j++){
+                    if(listaProf[j].matricula == listaDisc[i].matriculaProf){
+                        printf("Nome do Professor: %s\n", listaProf[j].nome);
+                        break;
+                    }
+                }
+                achou = 1;
+            }
+        }
+
+     if(!achou){
+            printf("Nenhuma disciplina com mais de 40 vagas.\n");
+        }
+    }
 }
 
 
