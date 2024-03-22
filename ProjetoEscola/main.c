@@ -84,8 +84,6 @@ void listarAniversariantesMes(Professor listaProf[], int contProf, int mes, int 
 void listarPessoasPorBusca(Professor listaProf[], int contProf, char busca[], int contAluno, Aluno listaAluno[]);
 void listarAlunosMenosTresDisciplinas(Aluno listaAluno[], int contAluno);
 void listarDisciplinasExcedentes(Disciplina listaDisc[], int contDisc, Professor listaProf[], int contProf);
-int validarData(int dia, int mes, int ano);
-int validarCPF(char cpf[]);
 int main(void){
 
     Aluno listaAluno[TamAluno];
@@ -648,9 +646,7 @@ int cadastrarAluno(int contAluno, Aluno listaAluno[]){
         fgets(cpf, 11, stdin);
         tamString = strlen(cpf) -1;
         cpf[tamString] = '\0';
-        if(!validarCPF(cpf)){
-            return CPF_INVALIDO;
-        }
+        
         printf("Digite a data de nacimento:\n");
         printf("Dia:\n");
         scanf("%d", &listaAluno[contAluno].dataNascimento.dia);
@@ -661,7 +657,38 @@ int cadastrarAluno(int contAluno, Aluno listaAluno[]){
         printf("Ano:\n");
         scanf("%d", &listaAluno[contAluno].dataNascimento.ano);
 
-        validarData(listaAluno[contAluno].dataNascimento.dia, listaAluno[contAluno].dataNascimento.mes,                                         listaAluno[contAluno].dataNascimento.ano);
+        if(listaAluno[contAluno].dataNascimento.ano < 1930 || 
+            listaAluno[contAluno].dataNascimento.ano > 2020){
+            return ANO_INVALIDO;
+        }
+
+        if(listaAluno[contAluno].dataNascimento.mes < 1 || 
+            listaAluno[contAluno].dataNascimento.mes > 12){
+            return MES_INVALIDO;
+        }
+
+
+        if(listaAluno[contAluno].dataNascimento.dia < 1 || 
+            listaAluno[contAluno].dataNascimento.dia > 31){
+            return DIA_INVALIDO;
+        }
+
+        if((listaAluno[contAluno].dataNascimento.mes == 4 || 
+            listaAluno[contAluno].dataNascimento.mes == 6 || 
+            listaAluno[contAluno].dataNascimento.mes == 9 || 
+            listaAluno[contAluno].dataNascimento.mes == 11) && 
+            listaAluno[contAluno].dataNascimento.dia > 30){
+            return DIA_INVALIDO;
+        }
+        if(listaAluno[contAluno].dataNascimento.mes == 2){
+            int bissexto = ((listaAluno[contAluno].dataNascimento.ano % 4 == 0) && 
+            (listaAluno[contAluno].dataNascimento.ano % 100 != 0)) || 
+            (listaAluno[contAluno].dataNascimento.ano % 400 == 0);
+            if((bissexto && listaAluno[contAluno].dataNascimento.dia > 29) || 
+                (!bissexto && listaAluno[contAluno].dataNascimento.dia > 28)){
+                return DIA_INVALIDO; 
+            }
+        }
 
     if(matricula < 0){
         return MATRICULA_INVALIDA;
@@ -735,10 +762,8 @@ int atualizarAluno(int contAluno, Aluno listaAluno[]){
                 char novoCpf[11];
                 fgets(novoCpf, 11, stdin);
                 tamString = strlen(novoCpf) -1;
-                novoCpf[tamString] = '\0';
-                if(!validarCPF(novoCpf)){
-                    return CPF_INVALIDO;
-                }
+                novoCpf[tamString] = '\0';               
+                
                 printf("Digite a nova data de nascimento:\n");
                 printf("Dia:\n");
                 scanf("%d", &listaAluno[i].dataNascimento.dia);
@@ -746,8 +771,40 @@ int atualizarAluno(int contAluno, Aluno listaAluno[]){
                 scanf("%d", &listaAluno[i].dataNascimento.mes);
                 printf("Ano:\n");
                 scanf("%d", &listaAluno[i].dataNascimento.ano);
-                validarData(listaAluno[contAluno].dataNascimento.dia, listaAluno[contAluno].dataNascimento.mes,  
-                                   listaAluno[contAluno].dataNascimento.ano);
+                
+                if(listaAluno[contAluno].dataNascimento.ano < 1930 || 
+                    listaAluno[contAluno].dataNascimento.ano > 2020){
+                    return ANO_INVALIDO;
+                }
+
+                if(listaAluno[contAluno].dataNascimento.mes < 1 || 
+                    listaAluno[contAluno].dataNascimento.mes > 12){
+                    return MES_INVALIDO;
+                }
+
+
+                if(listaAluno[contAluno].dataNascimento.dia < 1 || 
+                    listaAluno[contAluno].dataNascimento.dia > 31){
+                    return DIA_INVALIDO;
+                }
+
+                if((listaAluno[contAluno].dataNascimento.mes == 4 || 
+                    listaAluno[contAluno].dataNascimento.mes == 6 || 
+                    listaAluno[contAluno].dataNascimento.mes == 9 || 
+                    listaAluno[contAluno].dataNascimento.mes == 11) && 
+                    listaAluno[contAluno].dataNascimento.dia > 30){
+                    return DIA_INVALIDO;
+                }
+                if(listaAluno[contAluno].dataNascimento.mes == 2){
+                    int bissexto = ((listaAluno[contAluno].dataNascimento.ano % 4 == 0) && 
+                    (listaAluno[contAluno].dataNascimento.ano % 100 != 0)) || 
+                    (listaAluno[contAluno].dataNascimento.ano % 400 == 0);
+                    if((bissexto && listaAluno[contAluno].dataNascimento.dia > 29) || 
+                        (!bissexto && listaAluno[contAluno].dataNascimento.dia > 28)){
+                        return DIA_INVALIDO; 
+                    }
+                }
+                
                 listaAluno[i].matricula = novaMatricula;
                 listaAluno[i].sexo = novoSexo;
                 strcpy(listaAluno[i].nome, novoNome);
@@ -850,9 +907,7 @@ int cadastrarProf(int contProf, Professor listaProf[]){
         fgets(cpf, 11, stdin);
         tamString = strlen(cpf) -1;
         cpf[tamString] = '\0';
-        if(!validarCPF(cpf)){
-            return CPF_INVALIDO;
-        }
+        
         printf("Digite a data de nacimento:\n");
         printf("Dia:\n");
         scanf("%d", &listaProf[contProf].dataNascimento.dia);
@@ -863,8 +918,39 @@ int cadastrarProf(int contProf, Professor listaProf[]){
         printf("Ano:\n");
         scanf("%d", &listaProf[contProf].dataNascimento.ano);
 
-        validarData(listaProf[contProf].dataNascimento.dia, listaProf[contProf].dataNascimento.mes,  
-                    listaProf[contProf].dataNascimento.ano);
+        if(listaProf[contProf].dataNascimento.ano < 1930 || 
+            listaProf[contProf].dataNascimento.ano > 2020){
+            return ANO_INVALIDO;
+        }
+
+        if(listaProf[contProf].dataNascimento.mes < 1 || 
+            listaProf[contProf].dataNascimento.mes > 12){
+            return MES_INVALIDO;
+        }
+
+
+        if(listaProf[contProf].dataNascimento.dia < 1 || 
+            listaProf[contProf].dataNascimento.dia > 31){
+            return DIA_INVALIDO;
+        }
+
+        if((listaProf[contProf].dataNascimento.mes == 4 || 
+            listaProf[contProf].dataNascimento.mes == 6 || 
+            listaProf[contProf].dataNascimento.mes == 9 || 
+            listaProf[contProf].dataNascimento.mes == 11) && 
+            listaProf[contProf].dataNascimento.dia > 30){
+            return DIA_INVALIDO;
+        }
+        if(listaProf[contProf].dataNascimento.mes == 2){
+            int bissexto = ((listaProf[contProf].dataNascimento.ano % 4 == 0) && 
+            (listaProf[contProf].dataNascimento.ano % 100 != 0)) || 
+            (listaProf[contProf].dataNascimento.ano % 400 == 0);
+            if((bissexto && listaProf[contProf].dataNascimento.dia > 29) || 
+                (!bissexto && listaProf[contProf].dataNascimento.dia > 28)){
+                return DIA_INVALIDO; 
+            }
+        }
+        
     if(matricula < 0){
         return MATRICULA_INVALIDA;
     }
@@ -935,10 +1021,8 @@ int atualizarProf(int contProf, Professor listaProf[]){
                 char novoCpf[11];
                 fgets(novoCpf, 11, stdin);
                 tamString = strlen(novoCpf) -1;
-                novoCpf[tamString] = '\0';
-                if(!validarCPF(novoCpf)){
-                    return CPF_INVALIDO;
-                }
+                novoCpf[tamString] = '\0';                
+                
                 printf("Digite a nova data de nascimento:\n");
                 printf("Dia:\n");
                 scanf("%d", &listaProf[i].dataNascimento.dia);
@@ -947,8 +1031,39 @@ int atualizarProf(int contProf, Professor listaProf[]){
                 printf("Ano:\n");
                 scanf("%d", &listaProf[i].dataNascimento.ano);
                                 
-                validarData(listaProf[contProf].dataNascimento.dia,                                                                listaProf[contProf].dataNascimento.mes,  
-                            listaProf[contProf].dataNascimento.ano);
+                if(listaProf[contProf].dataNascimento.ano < 1930 || 
+                    listaProf[contProf].dataNascimento.ano > 2020){
+                    return ANO_INVALIDO;
+                }
+
+                if(listaProf[contProf].dataNascimento.mes < 1 || 
+                    listaProf[contProf].dataNascimento.mes > 12){
+                    return MES_INVALIDO;
+                }
+
+
+                if(listaProf[contProf].dataNascimento.dia < 1 || 
+                    listaProf[contProf].dataNascimento.dia > 31){
+                    return DIA_INVALIDO;
+                }
+
+                if((listaProf[contProf].dataNascimento.mes == 4 || 
+                    listaProf[contProf].dataNascimento.mes == 6 || 
+                    listaProf[contProf].dataNascimento.mes == 9 || 
+                    listaProf[contProf].dataNascimento.mes == 11) && 
+                    listaProf[contProf].dataNascimento.dia > 30){
+                    return DIA_INVALIDO;
+                }
+                if(listaProf[contProf].dataNascimento.mes == 2){
+                    int bissexto = ((listaProf[contProf].dataNascimento.ano % 4 == 0) && 
+                    (listaProf[contProf].dataNascimento.ano % 100 != 0)) || 
+                    (listaProf[contProf].dataNascimento.ano % 400 == 0);
+                    if((bissexto && listaProf[contProf].dataNascimento.dia > 29) || 
+                        (!bissexto && listaProf[contProf].dataNascimento.dia > 28)){
+                        return DIA_INVALIDO; 
+                    }
+                }
+                
                 listaProf[i].matricula = novaMatricula;
                 listaProf[i].sexo = novoSexo;
                 strcpy(listaProf[i].nome, novoNome);
@@ -1636,82 +1751,7 @@ void listarDisciplinasExcedentes(Disciplina listaDisc[], int contDisc, Professor
         }
     }
 }
-int validarData(int dia, int mes, int ano){
-    if(ano < 1930 || ano > 2020){
-        return ANO_INVALIDO;
-    }
 
-    if(mes < 1 || mes > 12){
-        return MES_INVALIDO;
-    }
-
-
-    if(dia < 1 || dia > 31){
-        return DIA_INVALIDO;
-    }
-
-    if((mes == 4 || mes == 6 || mes == 9 || mes == 11) && dia > 30){
-        return DIA_INVALIDO;
-    }
-    if(mes == 2){
-        int bissexto = ((ano % 4 == 0) && (ano % 100 != 0)) || (ano % 400 == 0);
-        if((bissexto && dia > 29) || (!bissexto && dia > 28)){
-            return DIA_INVALIDO; 
-        }
-    }
-}
-
-int validarCPF(char cpf[11]){
-    
-    if(strlen(cpf) != 11){
-        return CPF_INVALIDO;
-    }
-
-    for(int i = 0; i < 11; i++){
-        if(cpf[i] < '0' || cpf[i] > '9'){
-            return CPF_INVALIDO;
-        }
-    }
-
-    int todosDigitosIguais = 1;
-    for(int i = 1; i < 11; i++){
-        if(cpf[i] != cpf[i - 1]){
-            todosDigitosIguais = 0;
-            break;
-        }
-    }
-    if(todosDigitosIguais){
-        return CPF_INVALIDO;
-    }
-
-    int soma = 0;
-    for(int i = 0; i < 9; i++){
-        soma += (cpf[i] - '0') * (10 - i);
-    }
-    int digito1 = 11 - (soma % 11);
-    if(digito1 >= 10){
-        digito1 = 0;
-    }
-
-    if(digito1 != cpf[9] - '0'){
-        return CPF_INVALIDO;
-    }
-
-    soma = 0;
-    for(int i = 0; i < 10; i++){
-        soma += (cpf[i] - '0') * (11 - i);
-    }
-    int digito2 = 11 - (soma % 11);
-    if(digito2 >= 10){
-        digito2 = 0;
-    }
-
-    if (digito2 != cpf[10] - '0'){
-        return CPF_INVALIDO;
-    }
-    
-    return 1;
-}
 
 
 
