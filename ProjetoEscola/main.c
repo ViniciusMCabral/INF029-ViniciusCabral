@@ -1726,6 +1726,7 @@ void listarAlunosMenosTresDisciplinas(Aluno listaAluno[], int contAluno){
 
 }
 void listarDisciplinasExcedentes(Disciplina listaDisc[], int contDisc, Professor listaProf[], int contProf){
+    printf("--------------------------------------------------\n");
     printf("Disciplinas com Mais de 40 Vagas\n");
     if(contDisc == 0 || contProf == 0){
         printf("\nLista de disciplinas ou de professores vazia\n");
