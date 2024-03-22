@@ -28,7 +28,7 @@ typedef struct aluno {
     char sexo;
     int ativo;
     char nome[50];
-    char cpf[12];
+    char cpf[11];
     Data dataNascimento;
     int contMatriculado;
 } Aluno;
@@ -38,7 +38,7 @@ typedef struct pro {
     char sexo;
     int ativo;
     char nome[50];
-    char cpf[12];
+    char cpf[11];
     Data dataNascimento;
 } Professor;
 
@@ -85,6 +85,7 @@ void listarPessoasPorBusca(Professor listaProf[], int contProf, char busca[], in
 void listarAlunosMenosTresDisciplinas(Aluno listaAluno[], int contAluno);
 void listarDisciplinasExcedentes(Disciplina listaDisc[], int contDisc, Professor listaProf[], int contProf);
 int validarData(int dia, int mes, int ano);
+int validarCPF(char cpf[]);
 int main(void){
 
     Aluno listaAluno[TamAluno];
@@ -623,7 +624,7 @@ int cadastrarAluno(int contAluno, Aluno listaAluno[]){
         int matricula;
         char nome[50];
         char sexo;
-        char cpf[12];
+        char cpf[11];
         printf("\nDigite a matricula:\n");  
         scanf("%d", &matricula);
         for(int i = 0; i < contAluno; i++){
@@ -644,10 +645,12 @@ int cadastrarAluno(int contAluno, Aluno listaAluno[]){
         }
         getchar();
         printf("Digite o CPF:\n");
-        fgets(cpf, 12, stdin);
+        fgets(cpf, 11, stdin);
         tamString = strlen(cpf) -1;
         cpf[tamString] = '\0';
-
+        if(!validarCPF(cpf)){
+            return CPF_INVALIDO;
+        }
         printf("Digite a data de nacimento:\n");
         printf("Dia:\n");
         scanf("%d", &listaAluno[contAluno].dataNascimento.dia);
@@ -658,7 +661,7 @@ int cadastrarAluno(int contAluno, Aluno listaAluno[]){
         printf("Ano:\n");
         scanf("%d", &listaAluno[contAluno].dataNascimento.ano);
 
-        return validarData(listaAluno[contAluno].dataNascimento.dia, listaAluno[contAluno].dataNascimento.mes,                                         listaAluno[contAluno].dataNascimento.ano);
+        validarData(listaAluno[contAluno].dataNascimento.dia, listaAluno[contAluno].dataNascimento.mes,                                         listaAluno[contAluno].dataNascimento.ano);
 
     if(matricula < 0){
         return MATRICULA_INVALIDA;
@@ -729,11 +732,13 @@ int atualizarAluno(int contAluno, Aluno listaAluno[]){
                 }
                 getchar();
                 printf("Digite o novo CPF:\n");
-                char novoCpf[12];
-                fgets(novoCpf, 12, stdin);
+                char novoCpf[11];
+                fgets(novoCpf, 11, stdin);
                 tamString = strlen(novoCpf) -1;
                 novoCpf[tamString] = '\0';
-
+                if(!validarCPF(novoCpf)){
+                    return CPF_INVALIDO;
+                }
                 printf("Digite a nova data de nascimento:\n");
                 printf("Dia:\n");
                 scanf("%d", &listaAluno[i].dataNascimento.dia);
@@ -741,7 +746,7 @@ int atualizarAluno(int contAluno, Aluno listaAluno[]){
                 scanf("%d", &listaAluno[i].dataNascimento.mes);
                 printf("Ano:\n");
                 scanf("%d", &listaAluno[i].dataNascimento.ano);
-                return validarData(listaAluno[contAluno].dataNascimento.dia, listaAluno[contAluno].dataNascimento.mes,  
+                validarData(listaAluno[contAluno].dataNascimento.dia, listaAluno[contAluno].dataNascimento.mes,  
                                    listaAluno[contAluno].dataNascimento.ano);
                 listaAluno[i].matricula = novaMatricula;
                 listaAluno[i].sexo = novoSexo;
@@ -821,7 +826,7 @@ int cadastrarProf(int contProf, Professor listaProf[]){
         int matricula;
         char nome[50];
         char sexo;
-        char cpf[12];
+        char cpf[11];
         printf("\nDigite a matricula:\n");  
         scanf("%d", &matricula);
         for(int i = 0; i < contProf; i++){
@@ -842,10 +847,12 @@ int cadastrarProf(int contProf, Professor listaProf[]){
         }
         getchar();
         printf("Digite o CPF:\n");
-        fgets(cpf, 12, stdin);
+        fgets(cpf, 11, stdin);
         tamString = strlen(cpf) -1;
         cpf[tamString] = '\0';
-
+        if(!validarCPF(cpf)){
+            return CPF_INVALIDO;
+        }
         printf("Digite a data de nacimento:\n");
         printf("Dia:\n");
         scanf("%d", &listaProf[contProf].dataNascimento.dia);
@@ -856,8 +863,8 @@ int cadastrarProf(int contProf, Professor listaProf[]){
         printf("Ano:\n");
         scanf("%d", &listaProf[contProf].dataNascimento.ano);
 
-        return validarData(listaProf[contProf].dataNascimento.dia, listaProf[contProf].dataNascimento.mes,  
-                           listaProf[contProf].dataNascimento.ano);
+        validarData(listaProf[contProf].dataNascimento.dia, listaProf[contProf].dataNascimento.mes,  
+                    listaProf[contProf].dataNascimento.ano);
     if(matricula < 0){
         return MATRICULA_INVALIDA;
     }
@@ -925,11 +932,13 @@ int atualizarProf(int contProf, Professor listaProf[]){
                 }
                 getchar();
                 printf("Digite o novo CPF:\n");
-                char novoCpf[12];
-                fgets(novoCpf, 12, stdin);
+                char novoCpf[11];
+                fgets(novoCpf, 11, stdin);
                 tamString = strlen(novoCpf) -1;
                 novoCpf[tamString] = '\0';
-
+                if(!validarCPF(novoCpf)){
+                    return CPF_INVALIDO;
+                }
                 printf("Digite a nova data de nascimento:\n");
                 printf("Dia:\n");
                 scanf("%d", &listaProf[i].dataNascimento.dia);
@@ -937,8 +946,9 @@ int atualizarProf(int contProf, Professor listaProf[]){
                 scanf("%d", &listaProf[i].dataNascimento.mes);
                 printf("Ano:\n");
                 scanf("%d", &listaProf[i].dataNascimento.ano);
-                return validarData(listaProf[contProf].dataNascimento.dia, listaProf[contProf].dataNascimento.mes,  
-                                   listaProf[contProf].dataNascimento.ano);
+                                
+                validarData(listaProf[contProf].dataNascimento.dia,                                                                listaProf[contProf].dataNascimento.mes,  
+                            listaProf[contProf].dataNascimento.ano);
                 listaProf[i].matricula = novaMatricula;
                 listaProf[i].sexo = novoSexo;
                 strcpy(listaProf[i].nome, novoNome);
@@ -1649,6 +1659,58 @@ int validarData(int dia, int mes, int ano){
             return DIA_INVALIDO; 
         }
     }
+}
+
+int validarCPF(char cpf[11]){
+    
+    if(strlen(cpf) != 11){
+        return CPF_INVALIDO;
+    }
+
+    for(int i = 0; i < 11; i++){
+        if(cpf[i] < '0' || cpf[i] > '9'){
+            return CPF_INVALIDO;
+        }
+    }
+
+    int todosDigitosIguais = 1;
+    for(int i = 1; i < 11; i++){
+        if(cpf[i] != cpf[i - 1]){
+            todosDigitosIguais = 0;
+            break;
+        }
+    }
+    if(todosDigitosIguais){
+        return CPF_INVALIDO;
+    }
+
+    int soma = 0;
+    for(int i = 0; i < 9; i++){
+        soma += (cpf[i] - '0') * (10 - i);
+    }
+    int digito1 = 11 - (soma % 11);
+    if(digito1 >= 10){
+        digito1 = 0;
+    }
+
+    if(digito1 != cpf[9] - '0'){
+        return CPF_INVALIDO;
+    }
+
+    soma = 0;
+    for(int i = 0; i < 10; i++){
+        soma += (cpf[i] - '0') * (11 - i);
+    }
+    int digito2 = 11 - (soma % 11);
+    if(digito2 >= 10){
+        digito2 = 0;
+    }
+
+    if (digito2 != cpf[10] - '0'){
+        return CPF_INVALIDO;
+    }
+    
+    return 1;
 }
 
 
