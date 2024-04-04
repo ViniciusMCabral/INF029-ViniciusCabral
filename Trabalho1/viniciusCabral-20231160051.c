@@ -148,19 +148,48 @@ DataQuebrada quebraData(char data[]){
  */
 int q1(char data[])
 {
-  int datavalida = 1;
+    DataQuebrada dq = quebraData(data);
 
-  //quebrar a string data em strings sDia, sMes, sAno
+    if (!dq.valido) {
+        return 0;
+    }
 
-  //DataQuebrada dataQuebrada = quebraData(data);
-  //if (dataQuebrada.valido == 0) return 0;
+    int iDia = dq.iDia;
+    int iMes = dq.iMes;
+    int iAno = dq.iAno;
+    
+    if(iAno < 1){
+        return 0;
+    }
 
-  //printf("%s\n", data);
+    if(iMes < 1 || 
+        iMes > 12){
+        return 0;
+    }
 
-  if (datavalida)
-      return 1;
-  else
-      return 0;
+
+    if(iDia < 1 || 
+        iDia > 31){
+        return 0;
+    }
+
+    if((iMes == 4 || 
+        iMes == 6 || 
+        iMes == 9 || 
+        iMes == 11) && 
+        iDia > 30){
+        return 0;
+    }
+    if(iMes == 2){
+        int bissexto = ((iAno % 4 == 0) && 
+        (iAno % 100 != 0)) || 
+        (iAno % 400 == 0);
+        if((bissexto && iDia > 29) || 
+            (!bissexto && iDia > 28)){
+            return 0;
+        }
+    }
+    return 1;
 }
 
 
