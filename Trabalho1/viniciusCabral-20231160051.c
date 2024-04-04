@@ -217,10 +217,37 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
     if (q1(datainicial) == 0){
       dma.retorno = 2;
       return dma;
-    }else if (q1(datafinal) == 0){
+    }
+    if (q1(datafinal) == 0){
       dma.retorno = 3;
       return dma;
     }else{
+        DataQuebrada dq = quebraData(datainicial);
+        int iDiainicial = dq.iDia;
+        int iMesinicial = dq.iMes;
+        int iAnoinicial = dq.iAno;
+        dq = quebraData(datafinal);
+        int iDiafinal = dq.iDia;
+        int iMesfinal = dq.iMes;
+        int iAnofinal = dq.iAno;
+        
+        if(iAnoinicial > iAnofinal){
+            dma.retorno = 4;
+            return dma;
+        }
+        else if(iAnoinicial == iAnofinal && iMesinicial > iMesfinal){
+            dma.retorno = 4;
+            return dma;
+        }
+        else if(iAnoinicial == iAnofinal && iMesinicial == iMesfinal && iDiainicial  > iDiafinal){
+            dma.retorno = 4;
+            return dma;
+        }
+        else{
+            dma.qtdDias = iDiafinal - iDiainicial;
+            dma.qtdMeses = iMesfinal - iMesinicial;
+            dma.qtdAnos = iAnofinal - iAnoinicial;
+        }
       //verifique se a data final não é menor que a data inicial
 
       //calcule a distancia entre as datas

@@ -13,9 +13,9 @@ void testQ6();
 
 int main(){
     //pridntf("q1\n");
-    testQ1(); // 10 testes
+    // testQ1(); // 10 testes
     //pridntf("q2\n");
-    // testQ2(); // 35 testes
+    testQ2(); // 35 testes
     // //prindtf("q3\n");
     // testQ3(); // 13 testes
     // //prdintf("q4\n");
@@ -86,7 +86,6 @@ void testQ2(){
     strcpy(datafinal,"40/06/2016");
     dma = q2(datainicial, datafinal);
     printf("%d\n",dma.retorno == 3);
-
     strcpy(datainicial,"01/06/2016");
     strcpy(datafinal,"01/06/2015");
     dma = q2(datainicial, datafinal);
