@@ -211,21 +211,18 @@ int q1(char data[])
 DiasMesesAnos q2(char datainicial[], char datafinal[]) {
     DiasMesesAnos dma;
 
-    // Verifica se as datas de entrada são válidas
     if (q1(datainicial) == 0) {
-        dma.retorno = 2; // Código de retorno 2 para data inicial inválida
+        dma.retorno = 2;
         return dma;
     }
     if (q1(datafinal) == 0) {
-        dma.retorno = 3; // Código de retorno 3 para data final inválida
+        dma.retorno = 3;
         return dma;
     }
 
-    // Quebra as datas em dia, mês e ano
     DataQuebrada dqInicial = quebraData(datainicial);
     DataQuebrada dqFinal = quebraData(datafinal);
 
-    // Extrai dia, mês e ano de cada data
     int iDiainicial = dqInicial.iDia;
     int iMesinicial = dqInicial.iMes;
     int iAnoinicial = dqInicial.iAno;
@@ -234,20 +231,17 @@ DiasMesesAnos q2(char datainicial[], char datafinal[]) {
     int iMesfinal = dqFinal.iMes;
     int iAnofinal = dqFinal.iAno;
 
-    // Verifica se a data inicial é posterior à data final
     if (iAnoinicial > iAnofinal ||
         (iAnoinicial == iAnofinal && iMesinicial > iMesfinal) ||
         (iAnoinicial == iAnofinal && iMesinicial == iMesfinal && iDiainicial > iDiafinal)) {
-        dma.retorno = 4; // Código de retorno 4 para data inicial maior que a data final
+        dma.retorno = 4;
         return dma;
     }
 
-    // Calcula a diferença de dias, meses e anos entre as datas
     dma.qtdAnos = iAnofinal - iAnoinicial;
     dma.qtdMeses = iMesfinal - iMesinicial;
     dma.qtdDias = iDiafinal - iDiainicial;
 
-    // Corrige os valores se a diferença de dias ou meses for negativa
     if (dma.qtdDias < 0) {
         int diasMesAnterior = 0;
         if (iMesinicial == 1) {
@@ -278,7 +272,7 @@ DiasMesesAnos q2(char datainicial[], char datafinal[]) {
         }
     }
 
-    dma.retorno = 1; // Código de retorno 1 para cálculos bem-sucedidos
+    dma.retorno = 1; 
     return dma;
 }
 
@@ -295,7 +289,24 @@ DiasMesesAnos q2(char datainicial[], char datafinal[]) {
  */
 int q3(char *texto, char c, int isCaseSensitive)
 {
-    int qtdOcorrencias = -1;
+    int qtdOcorrencias = 0;
+
+    if (isCaseSensitive) {
+        for (int i = 0; texto[i] != '\0'; i++) { 
+            if (c == texto[i]) { 
+                qtdOcorrencias++;
+            }
+        }
+    } else {
+        for (int i = 0; texto[i] != '\0'; i++) { 
+            if (texto[i] >= 'A' && texto[i] <= 'Z') {
+                texto[i] = texto[i] - 'A' + 'a';
+            }
+            if (c == texto[i]) {
+                qtdOcorrencias++;
+            }
+        }
+    }
 
     return qtdOcorrencias;
 }
