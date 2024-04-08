@@ -208,58 +208,80 @@ int q1(char data[])
     4 -> datainicial > datafinal
     Caso o cálculo esteja correto, os atributos qtdDias, qtdMeses e qtdAnos devem ser preenchidos com os valores correspondentes.
  */
-DiasMesesAnos q2(char datainicial[], char datafinal[])
-{
-
-    //calcule os dados e armazene nas três variáveis a seguir
+DiasMesesAnos q2(char datainicial[], char datafinal[]) {
     DiasMesesAnos dma;
 
-    if (q1(datainicial) == 0){
-      dma.retorno = 2;
-      return dma;
+    // Verifica se as datas de entrada são válidas
+    if (q1(datainicial) == 0) {
+        dma.retorno = 2; // Código de retorno 2 para data inicial inválida
+        return dma;
     }
-    if (q1(datafinal) == 0){
-      dma.retorno = 3;
-      return dma;
-    }else{
-        DataQuebrada dq = quebraData(datainicial);
-        int iDiainicial = dq.iDia;
-        int iMesinicial = dq.iMes;
-        int iAnoinicial = dq.iAno;
-        dq = quebraData(datafinal);
-        int iDiafinal = dq.iDia;
-        int iMesfinal = dq.iMes;
-        int iAnofinal = dq.iAno;
-        
-        if(iAnoinicial > iAnofinal){
-            dma.retorno = 4;
-            return dma;
-        }
-        else if(iAnoinicial == iAnofinal && iMesinicial > iMesfinal){
-            dma.retorno = 4;
-            return dma;
-        }
-        else if(iAnoinicial == iAnofinal && iMesinicial == iMesfinal && iDiainicial  > iDiafinal){
-            dma.retorno = 4;
-            return dma;
-        }
-        else{
-            dma.qtdDias = iDiafinal - iDiainicial;
-            dma.qtdMeses = iMesfinal - iMesinicial;
-            dma.qtdAnos = iAnofinal - iAnoinicial;
-        }
-      //verifique se a data final não é menor que a data inicial
-
-      //calcule a distancia entre as datas
-
-
-      //se tudo der certo
-      dma.retorno = 1;
-      return dma;
-
+    if (q1(datafinal) == 0) {
+        dma.retorno = 3; // Código de retorno 3 para data final inválida
+        return dma;
     }
 
+    // Quebra as datas em dia, mês e ano
+    DataQuebrada dqInicial = quebraData(datainicial);
+    DataQuebrada dqFinal = quebraData(datafinal);
+
+    // Extrai dia, mês e ano de cada data
+    int iDiainicial = dqInicial.iDia;
+    int iMesinicial = dqInicial.iMes;
+    int iAnoinicial = dqInicial.iAno;
+
+    int iDiafinal = dqFinal.iDia;
+    int iMesfinal = dqFinal.iMes;
+    int iAnofinal = dqFinal.iAno;
+
+    // Verifica se a data inicial é posterior à data final
+    if (iAnoinicial > iAnofinal ||
+        (iAnoinicial == iAnofinal && iMesinicial > iMesfinal) ||
+        (iAnoinicial == iAnofinal && iMesinicial == iMesfinal && iDiainicial > iDiafinal)) {
+        dma.retorno = 4; // Código de retorno 4 para data inicial maior que a data final
+        return dma;
+    }
+
+    // Calcula a diferença de dias, meses e anos entre as datas
+    dma.qtdAnos = iAnofinal - iAnoinicial;
+    dma.qtdMeses = iMesfinal - iMesinicial;
+    dma.qtdDias = iDiafinal - iDiainicial;
+
+    // Corrige os valores se a diferença de dias ou meses for negativa
+    if (dma.qtdDias < 0) {
+        int diasMesAnterior = 0;
+        if (iMesinicial == 1) {
+            diasMesAnterior = 31;
+        } else if (iMesinicial == 2) {
+            if ((iAnoinicial % 4 == 0 && iAnoinicial % 100 != 0) || (iAnoinicial % 400 == 0)) {
+                diasMesAnterior = 28;
+            } else {
+                diasMesAnterior = 27;
+            }
+            if (iMesfinal == 3) {
+                if ((iAnofinal % 4 == 0 && iAnofinal % 100 != 0) || (iAnofinal % 400 == 0)) {
+                    diasMesAnterior = 29;
+                } else {
+                    diasMesAnterior = 28;
+                }
+            }
+        } else if (iMesinicial == 3 || iMesinicial == 5 || iMesinicial == 7 || iMesinicial == 8 || iMesinicial == 10 || iMesinicial == 12) {
+            diasMesAnterior = 31;
+        } else {
+            diasMesAnterior = 30;
+        }
+        dma.qtdDias += diasMesAnterior;
+        dma.qtdMeses--;
+        if (dma.qtdMeses < 0) {
+            dma.qtdMeses += 12;
+            dma.qtdAnos--;
+        }
+    }
+
+    dma.retorno = 1; // Código de retorno 1 para cálculos bem-sucedidos
+    return dma;
 }
+
 
 /*
  Q3 = encontrar caracter em texto
@@ -311,8 +333,30 @@ int q4(char *strTexto, char *strBusca, int posicoes[30])
  */
 
 int q5(int num)
-{
-
+{    
+ 
+    int contCasadecimal = 1;
+    while(num > 9){
+        num %= 10;
+        contCasadecimal ++;
+    }
+    int divisor = 1;
+    for(int i=0; i<contCasadecimal-1; i++){
+        divisor *= 10;
+    }
+    int separarNumeros[contCasadecimal];
+    for(int i=0; i<contCasadecimal; i++){
+        separarNumeros[i] = num / divisor;
+        num %= divisor;
+        divisor /= 10;
+    }
+    num = 0;
+    int aux = 10;
+    for(int i=contCasadecimal-1; i>=0; i--){
+        num += separarNumeros[i];
+        separarNumeros[i-1] *= aux;
+        aux *= 10;
+    }
     return num;
 }
 
