@@ -302,6 +302,9 @@ int q3(char *texto, char c, int isCaseSensitive)
             if (texto[i] >= 'A' && texto[i] <= 'Z') {
                 texto[i] = texto[i] - 'A' + 'a';
             }
+        }
+        
+        for (int i = 0; texto[i] != '\0'; i++) {
             if (c == texto[i]) {
                 qtdOcorrencias++;
             }
@@ -343,33 +346,19 @@ int q4(char *strTexto, char *strBusca, int posicoes[30])
     Número invertido
  */
 
-int q5(int num)
+int q5(int num) 
 {    
- 
-    int contCasadecimal = 1;
-    while(num > 9){
-        num %= 10;
-        contCasadecimal ++;
+    int invertido = 0;
+
+    while (num != 0) {
+        int digito = num % 10;
+        invertido = invertido * 10 + digito;
+        num /= 10;
     }
-    int divisor = 1;
-    for(int i=0; i<contCasadecimal-1; i++){
-        divisor *= 10;
-    }
-    int separarNumeros[contCasadecimal];
-    for(int i=0; i<contCasadecimal; i++){
-        separarNumeros[i] = num / divisor;
-        num %= divisor;
-        divisor /= 10;
-    }
-    num = 0;
-    int aux = 10;
-    for(int i=contCasadecimal-1; i>=0; i--){
-        num += separarNumeros[i];
-        separarNumeros[i-1] *= aux;
-        aux *= 10;
-    }
+    num = invertido;
     return num;
 }
+
 
 /*
  Q6 = ocorrência de um número em outro
