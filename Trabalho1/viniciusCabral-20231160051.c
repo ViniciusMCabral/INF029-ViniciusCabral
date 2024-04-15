@@ -23,6 +23,7 @@
 
 #include <stdio.h>
 #include "viniciusCabral-20231160051.h" // Substitua pelo seu arquivo de header renomeado
+#include <string.h>
 #include <stdlib.h>
 /*
 ## função utilizada para testes  ##
@@ -287,25 +288,35 @@ DiasMesesAnos q2(char datainicial[], char datafinal[]) {
  @saida
     Um número n >= 0.
  */
-int q3(char *texto, char c, int isCaseSensitive)
-{
+int q3(char *texto, char c, int isCaseSensitive) {
     int qtdOcorrencias = 0;
+    char textoCopia[strlen(texto) + 1]; 
 
-    if (isCaseSensitive) {
-        for (int i = 0; texto[i] != '\0'; i++) { 
-            if (c == texto[i]) { 
+    strcpy(textoCopia, texto); 
+
+    if (!isCaseSensitive) {
+        for (int i = 0; textoCopia[i] != '\0'; i++) {
+            if (c >= 'a' && c <= 'z') {
+                if (textoCopia[i] >= 'A' && textoCopia[i] <= 'Z') {
+                    textoCopia[i] = textoCopia[i] + 32;
+                }
+            }
+            else {
+                if (textoCopia[i] >= 'a' && textoCopia[i] <= 'z') {
+                    textoCopia[i] = textoCopia[i] - 32;
+                }
+            }
+            
+        }
+
+        for (int i = 0; textoCopia[i] != '\0'; i++) {
+            if (c == textoCopia[i]) {
                 qtdOcorrencias++;
             }
         }
     } else {
         for (int i = 0; texto[i] != '\0'; i++) { 
-            if (texto[i] >= 'A' && texto[i] <= 'Z') {
-                texto[i] = texto[i] - 'A' + 'a';
-            }
-        }
-        
-        for (int i = 0; texto[i] != '\0'; i++) {
-            if (c == texto[i]) {
+            if (c == texto[i]) { 
                 qtdOcorrencias++;
             }
         }
