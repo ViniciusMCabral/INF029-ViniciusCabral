@@ -343,20 +343,15 @@ int q5(int num) {
 
 int q6(int numerobase, int numerobusca) {
     int qtdOcorrencias = 0;
-
-    // Loop para verificar cada dígito do número base
     while (numerobase > 0) {
-        // Obtém o último dígito do número base
         int digito = numerobase % 10;
-
-        // Verifica se o dígito é igual ao número de busca
+        
         if (digito == numerobusca) {
             qtdOcorrencias++;
         }
-
-        // Remove o último dígito do número base
+        
         numerobase /= 10;
     }
-
+    
     return qtdOcorrencias;
 }
