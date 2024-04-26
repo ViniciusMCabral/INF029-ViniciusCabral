@@ -147,8 +147,7 @@ DataQuebrada quebraData(char data[]){
     Não utilizar funções próprias de string (ex: strtok)   
     pode utilizar strlen para pegar o tamanho da string
  */
-int q1(char data[])
-{
+int q1(char data[]) {
     DataQuebrada dq = quebraData(data);
 
     if (!dq.valido) {
@@ -292,61 +291,74 @@ int q3(char *texto, char c, int isCaseSensitive) {
     int qtdOcorrencias = 0;
     char textoCopia[strlen(texto) + 1]; 
 
-    strcpy(textoCopia, texto); 
-
-    if (!isCaseSensitive) {
+        strcpy(textoCopia, texto); 
+    
+    if (!isCaseSensitive) {    
         for (int i = 0; textoCopia[i] != '\0'; i++) {
-            if (c >= 'a' && c <= 'z') {
+            if (c >= 'a' && c     <= 'z') {
                 if (textoCopia[i] >= 'A' && textoCopia[i] <= 'Z') {
                     textoCopia[i] = textoCopia[i] + 32;
-                }
-            }
-            else {
+                }    
+            }    
+            else {    
                 if (textoCopia[i] >= 'a' && textoCopia[i] <= 'z') {
-                    textoCopia[i] = textoCopia[i] - 32;
+                        textoCopia[i] = textoCopia[i] - 32;
+                    }
                 }
+                
             }
-            
-        }
-
+    
         for (int i = 0; textoCopia[i] != '\0'; i++) {
             if (c == textoCopia[i]) {
                 qtdOcorrencias++;
-            }
-        }
-    } else {
+            }    
+        }    
+    } else {    
         for (int i = 0; texto[i] != '\0'; i++) { 
             if (c == texto[i]) { 
                 qtdOcorrencias++;
+                }
             }
         }
-    }
-
+    
     return qtdOcorrencias;
-}
-
-/*
- Q4 = encontrar palavra em texto
- @objetivo
-    Pesquisar todas as ocorrências de uma palavra em um texto
- @entrada
-    uma string texto base (strTexto), uma string strBusca e um vetor de inteiros (posicoes) que irá guardar as posições de início e fim de cada ocorrência da palavra (strBusca) no texto base (texto).
- @saida
-    Um número n >= 0 correspondente a quantidade de ocorrências encontradas.
-    O vetor posicoes deve ser preenchido com cada entrada e saída correspondente. Por exemplo, se tiver uma única ocorrência, a posição 0 do vetor deve ser preenchido com o índice de início do texto, e na posição 1, deve ser preenchido com o índice de fim da ocorrencias. Se tiver duas ocorrências, a segunda ocorrência será amazenado nas posições 2 e 3, e assim consecutivamente. Suponha a string "Instituto Federal da Bahia", e palavra de busca "dera". Como há uma ocorrência da palavra de busca no texto, deve-se armazenar no vetor, da seguinte forma:
-        posicoes[0] = 13;
+}    
+    
+/*    
+ Q4 = encontra    r palavra em texto
+ @objetivo    
+    Pesquisar     todas as ocorrências de uma palavra em um texto
+ @entrada    
+    uma string     texto base (strTexto), uma string strBusca e um vetor de inteiros (posicoes) que irá guardar as posições de início e fim de cada ocorrência da palavra (st    rBusca) no texto base (texto).
+ @saida    
+    Um número n >= 0 correspondente a quantid    ade de ocorrências encontradas.
+    O vetor posicoes deve ser preenchido     com cada entrada e saída correspondente. Por exemplo, se tiver uma única ocorrência, a posição 0 do vetor deve ser preenchido com o índice de início do     texto, e na posição 1, deve ser preenchido com o índice de fim da ocorrencias. Se tiver duas ocorrências, a segunda ocorrência será amazenado nas pos    ições 2 e 3, e assim consecutivamente. Suponha a string "Instituto Federal da Bahia", e palavra de busca "dera". Como há uma ocorrência da palavra de busc    a no texto, deve-se armazenar no vetor, da seguinte forma:
+        posicoes[0] = 13;    
         posicoes[1] = 16;
         Observe que o índice da posição no texto deve começar ser contado a partir de 1.
         O retorno da função, n, nesse caso seria 1;
 
  */
-int q4(char *strTexto, char *strBusca, int posicoes[30])
-{
-    int qtdOcorrencias = -1;
+int q4(char *texto, char *strBusca, int *posicoes) {
+    int qtdOcorrencias = 0;
+    int textoTam = strlen(texto);
+    int buscaTam = strlen(strBusca);
+    int i, j, k;
+
+    for (i = 0; i <= textoTam - buscaTam; i++) {
+        for (j = 0, k = i; j < buscaTam && texto[k] == strBusca[j]; j++, k++);
+        
+        if (j == buscaTam) {
+            qtdOcorrencias++;
+            posicoes[2 * (qtdOcorrencias - 1)] = i + 1;
+            posicoes[2 * (qtdOcorrencias - 1) + 1] = i + buscaTam;
+
+            i = k - 1;
+        }
+    }
 
     return qtdOcorrencias;
 }
-
 /*
  Q5 = inverte número
  @objetivo
@@ -355,10 +367,9 @@ int q4(char *strTexto, char *strBusca, int posicoes[30])
     uma int num.
  @saida
     Número invertido
- */
+ */                                
 
-int q5(int num) 
-{    
+int q5(int num) {    
     int invertido = 0;
 
     while (num != 0) {
@@ -370,7 +381,7 @@ int q5(int num)
     return num;
 }
 
-
+                                                                                                                                    
 /*
  Q6 = ocorrência de um número em outro
  @objetivo
@@ -381,8 +392,22 @@ int q5(int num)
     Quantidade de vezes que número de busca ocorre em número base
  */
 
-int q6(int numerobase, int numerobusca)
-{
-    int qtdOcorrencias;
+int q6(int numerobase, int numerobusca) {
+    int qtdOcorrencias = 0;
+
+    // Loop para verificar cada dígito do número base
+    while (numerobase > 0) {
+        // Obtém o último dígito do número base
+        int digito = numerobase % 10;
+
+        // Verifica se o dígito é igual ao número de busca
+        if (digito == numerobusca) {
+            qtdOcorrencias++;
+        }
+
+        // Remove o último dígito do número base
+        numerobase /= 10;
+    }
+
     return qtdOcorrencias;
 }
