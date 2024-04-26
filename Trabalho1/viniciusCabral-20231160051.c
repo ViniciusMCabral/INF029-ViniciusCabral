@@ -11,10 +11,10 @@
 //  O aluno deve preencher seus dados abaixo, e implementar as questões do trabalho
 
 //  ----- Dados do Aluno -----
-//  Nome:
-//  email:
-//  Matrícula:
-//  Semestre:
+//  Nome: Vinicius Machak Cabral
+//  email: vmachakcabral@gmail.com
+//  Matrícula: 20231160051
+//  Semestre: 2
 
 //  Copyright © 2016 Renato Novais. All rights reserved.
 // Última atualização: 07/05/2021 - 19/08/2016
@@ -22,60 +22,9 @@
 // #################################################
 
 #include <stdio.h>
-#include "viniciusCabral-20231160051.h" // Substitua pelo seu arquivo de header renomeado
+#include "viniciusCabral-20231160051.h" 
 #include <string.h>
 #include <stdlib.h>
-/*
-## função utilizada para testes  ##
-
- somar = somar dois valores
-@objetivo
-    Somar dois valores x e y e retonar o resultado da soma
-@entrada
-    dois inteiros x e y
-@saida
-    resultado da soma (x + y)
- */
-int somar(int x, int y)
-{
-    int soma;
-    soma = x + y;
-    return soma;
-}
-
-/*
-## função utilizada para testes  ##
-
- fatorial = fatorial de um número
-@objetivo
-    calcular o fatorial de um número
-@entrada
-    um inteiro x
-@saida
-    fatorial de x -> x!
- */
-int fatorial(int x)
-{ //função utilizada para testes
-  int i, fat = 1;
-
-  for (i = x; i > 1; i--)
-    fat = fat * i;
-
-  return fat;
-}
-
-int teste(int a)
-{
-    int val;
-    if (a == 2)
-        val = 3;
-    else
-        val = 4;
-
-    return val;
-}
-
-
 
 DataQuebrada quebraData(char data[]){
   DataQuebrada dq;
