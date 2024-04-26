@@ -99,7 +99,7 @@ DataQuebrada quebraData(char data[]){
 int q1(char data[]) {
     DataQuebrada dq = quebraData(data);
 
-    if (!dq.valido) {
+    if(!dq.valido) {
         return 0;
     }
 
@@ -160,11 +160,11 @@ int q1(char data[]) {
 DiasMesesAnos q2(char datainicial[], char datafinal[]) {
     DiasMesesAnos dma;
 
-    if (q1(datainicial) == 0) {
+    if(q1(datainicial) == 0) {
         dma.retorno = 2;
         return dma;
     }
-    if (q1(datafinal) == 0) {
+    if(q1(datafinal) == 0) {
         dma.retorno = 3;
         return dma;
     }
@@ -180,7 +180,7 @@ DiasMesesAnos q2(char datainicial[], char datafinal[]) {
     int iMesfinal = dqFinal.iMes;
     int iAnofinal = dqFinal.iAno;
 
-    if (iAnoinicial > iAnofinal ||
+    if(iAnoinicial > iAnofinal ||
         (iAnoinicial == iAnofinal && iMesinicial > iMesfinal) ||
         (iAnoinicial == iAnofinal && iMesinicial == iMesfinal && iDiainicial > iDiafinal)) {
         dma.retorno = 4;
@@ -191,31 +191,31 @@ DiasMesesAnos q2(char datainicial[], char datafinal[]) {
     dma.qtdMeses = iMesfinal - iMesinicial;
     dma.qtdDias = iDiafinal - iDiainicial;
 
-    if (dma.qtdDias < 0) {
+    if(dma.qtdDias < 0) {
         int diasMesAnterior = 0;
-        if (iMesinicial == 1) {
+        if(iMesinicial == 1) {
             diasMesAnterior = 31;
-        } else if (iMesinicial == 2) {
-            if ((iAnoinicial % 4 == 0 && iAnoinicial % 100 != 0) || (iAnoinicial % 400 == 0)) {
+        } else if(iMesinicial == 2) {
+            if((iAnoinicial % 4 == 0 && iAnoinicial % 100 != 0) || (iAnoinicial % 400 == 0)) {
                 diasMesAnterior = 28;
-            } else {
+            } else{
                 diasMesAnterior = 27;
             }
-            if (iMesfinal == 3) {
-                if ((iAnofinal % 4 == 0 && iAnofinal % 100 != 0) || (iAnofinal % 400 == 0)) {
+            if(iMesfinal == 3) {
+                if((iAnofinal % 4 == 0 && iAnofinal % 100 != 0) || (iAnofinal % 400 == 0)) {
                     diasMesAnterior = 29;
-                } else {
+                } else{
                     diasMesAnterior = 28;
                 }
             }
-        } else if (iMesinicial == 3 || iMesinicial == 5 || iMesinicial == 7 || iMesinicial == 8 || iMesinicial == 10 || iMesinicial == 12) {
+        } else if(iMesinicial == 3 || iMesinicial == 5 || iMesinicial == 7 || iMesinicial == 8 || iMesinicial == 10 || iMesinicial == 12) {
             diasMesAnterior = 31;
-        } else {
+        } else{
             diasMesAnterior = 30;
         }
         dma.qtdDias += diasMesAnterior;
         dma.qtdMeses--;
-        if (dma.qtdMeses < 0) {
+        if(dma.qtdMeses < 0) {
             dma.qtdMeses += 12;
             dma.qtdAnos--;
         }
@@ -242,29 +242,29 @@ int q3(char *texto, char c, int isCaseSensitive) {
 
         strcpy(textoCopia, texto); 
     
-    if (!isCaseSensitive) {    
-        for (int i = 0; textoCopia[i] != '\0'; i++) {
-            if (c >= 'a' && c     <= 'z') {
-                if (textoCopia[i] >= 'A' && textoCopia[i] <= 'Z') {
+    if(!isCaseSensitive) {    
+        for(int i = 0; textoCopia[i] != '\0'; i++) {
+            if(c >= 'a' && c     <= 'z') {
+                if(textoCopia[i] >= 'A' && textoCopia[i] <= 'Z') {
                     textoCopia[i] = textoCopia[i] + 32;
                 }    
             }    
             else {    
-                if (textoCopia[i] >= 'a' && textoCopia[i] <= 'z') {
+                if(textoCopia[i] >= 'a' && textoCopia[i] <= 'z') {
                         textoCopia[i] = textoCopia[i] - 32;
                     }
                 }
                 
             }
     
-        for (int i = 0; textoCopia[i] != '\0'; i++) {
-            if (c == textoCopia[i]) {
+        for(int i = 0; textoCopia[i] != '\0'; i++) {
+            if(c == textoCopia[i]) {
                 qtdOcorrencias++;
             }    
         }    
     } else {    
-        for (int i = 0; texto[i] != '\0'; i++) { 
-            if (c == texto[i]) { 
+        for(int i = 0; texto[i] != '\0'; i++) { 
+            if(c == texto[i]) { 
                 qtdOcorrencias++;
                 }
             }
@@ -294,10 +294,10 @@ int q4(char *texto, char *strBusca, int *posicoes) {
     int buscaTam = strlen(strBusca);
     int i, j, k;
 
-    for (i = 0; i <= textoTam - buscaTam; i++) {
-        for (j = 0, k = i; j < buscaTam && texto[k] == strBusca[j]; j++, k++);
+    for(i = 0; i <= textoTam - buscaTam; i++) {
+        for(j = 0, k = i; j < buscaTam && texto[k] == strBusca[j]; j++, k++);
         
-        if (j == buscaTam) {
+        if(j == buscaTam) {
             qtdOcorrencias++;
             posicoes[2 * (qtdOcorrencias - 1)] = i + 1;
             posicoes[2 * (qtdOcorrencias - 1) + 1] = i + buscaTam;
@@ -321,7 +321,7 @@ int q4(char *texto, char *strBusca, int *posicoes) {
 int q5(int num) {    
     int invertido = 0;
 
-    while (num != 0) {
+    while(num != 0) {
         int digito = num % 10;
         invertido = invertido * 10 + digito;
         num /= 10;
@@ -343,14 +343,13 @@ int q5(int num) {
 
 int q6(int numerobase, int numerobusca) {
     int qtdOcorrencias = 0;
-    while (numerobase > 0) {
-        int digito = numerobase % 10;
-        
-        if (digito == numerobusca) {
+    int temp = numerobase;
+    
+    while(temp > 0) {   
+        if(temp % 10 == numerobusca) {
             qtdOcorrencias++;
         }
-        
-        numerobase /= 10;
+        temp /= 10;
     }
     
     return qtdOcorrencias;
