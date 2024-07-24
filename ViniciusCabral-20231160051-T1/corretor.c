@@ -10,31 +10,18 @@ void testQ5();
 void testQ6();
 
 int main(){
-    printf("----------------\n");
-    printf("q1\n");
-    printf("----------------\n");
+    //pridntf("q1\n");
     testQ1(); // 10 testes
-    printf("----------------\n");
-    printf("q2\n");
-    printf("----------------\n");
+    //pridntf("q2\n");
     testQ2(); // 35 testes
-    printf("----------------\n");
-    printf("q3\n");
-    printf("----------------\n");
+    //prindtf("q3\n");
     testQ3(); // 13 testes
-    printf("----------------\n");
-    printf("q4\n");
-    printf("----------------\n");
+    //prdintf("q4\n");
     testQ4(); // 22 testes
-    printf("----------------\n");
-    printf("q5\n");
-    printf("----------------\n");
+    //prdintf("q5\n");
     testQ5(); // 10 testes
-    printf("----------------\n");
-    printf("q6\n");
-    printf("----------------\n");
+    //prdintf("q6\n");
     testQ6(); // 10 testes 
-    printf("----------------\n");
 
 
 }
@@ -97,6 +84,7 @@ void testQ2(){
     strcpy(datafinal,"40/06/2016");
     dma = q2(datainicial, datafinal);
     printf("%d\n",dma.retorno == 3);
+
     strcpy(datainicial,"01/06/2016");
     strcpy(datafinal,"01/06/2015");
     dma = q2(datainicial, datafinal);
