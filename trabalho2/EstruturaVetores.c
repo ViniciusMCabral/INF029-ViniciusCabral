@@ -4,7 +4,21 @@
 
 #include "EstruturaVetores.h"
 
-int vetorPrincipal[TAM];
+typedef struct {
+    int *valor;
+    int tamanho;
+} EstruturaAux;
+
+
+EstruturaAux vetorPrincipal[TAM];
+
+// botar o trecho no inicio do main
+void iniciarVetorPrincipal() {
+    for (int i = 0; i < TAM; i++) {
+        vetorPrincipal[i].valor = NULL;
+        vetorPrincipal[i].tamanho = 0;
+    }
+}
 
 /*
 Objetivo: criar estrutura auxiliar na posição 'posicao'.
@@ -19,25 +33,37 @@ Rertono (int)
 */
 int criarEstruturaAuxiliar(int posicao, int tamanho)
 {
-
     int retorno = 0;
-    // a posicao pode já existir estrutura auxiliar
-    retorno = JA_TEM_ESTRUTURA_AUXILIAR;
     // se posição é um valor válido {entre 1 e 10}
-    retorno = POSICAO_INVALIDA;
-    // o tamanho ser muito grande
-    retorno = SEM_ESPACO_DE_MEMORIA;
-    // o tamanho nao pode ser menor que 1
-    retorno = TAMANHO_INVALIDO;
-    // deu tudo certo, crie
-    retorno = SUCESSO;
+    if (posicao < 1 || posicao >= 10) {
+        return retorno = POSICAO_INVALIDA;
+    }
 
-    return retorno;
+    // o tamanho nao pode ser menor que 1
+    if (tamanho < 1) {
+       return retorno = TAMANHO_INVALIDO;
+    }
+
+    if (vetorPrincipal[posicao].valor != NULL) {
+        // a posicao pode já existir estrutura auxiliar
+        return retorno = JA_TEM_ESTRUTURA_AUXILIAR;
+    }
+    else {
+        vetorPrincipal[posicao].valor = (int *)malloc(tamanho * sizeof(int));
+        if (vetorPrincipal[posicao].valor == NULL) {
+            // o tamanho ser muito grande
+           return retorno = SEM_ESPACO_DE_MEMORIA;
+        }
+        else {
+            // deu tudo certo, crie
+           return retorno = SUCESSO;
+        }      
+    }    
 }
 
 /*
 Objetivo: inserir número 'valor' em estrutura auxiliar da posição 'posicao'
-Rertono (int)
+Retorno (int)
     SUCESSO - inserido com sucesso
     SEM_ESPACO - não tem espaço
     SEM_ESTRUTURA_AUXILIAR - Não tem estrutura auxiliar
@@ -47,18 +73,17 @@ CONSTANTES
 int inserirNumeroEmEstrutura(int posicao, int valor)
 {
     int retorno = 0;
-    int existeEstruturaAuxiliar = 0;
     int temEspaco = 0;
-    int posicao_invalida = 0;
 
-    if (posicao_invalida)
-        retorno = POSICAO_INVALIDA;
+    if (posicao < 1 || posicao >= 10)
+        return retorno = POSICAO_INVALIDA;
     else
     {
         // testar se existe a estrutura auxiliar
-        if (existeEstruturaAuxiliar)
+        if (vetorPrincipal[posicao].valor != NULL)
         {
-            if (temEspaco)
+            // verificar se tem espaço na estrutura auxiliar
+            if (vetorPrincipal[posicao].tamanho)
             {
                 //insere
                 retorno = SUCESSO;
@@ -70,11 +95,10 @@ int inserirNumeroEmEstrutura(int posicao, int valor)
         }
         else
         {
-            retorno = SEM_ESTRUTURA_AUXILIAR;
+           return retorno = SEM_ESTRUTURA_AUXILIAR;
         }
     }
 
-    return retorno;
 }
 
 /*
