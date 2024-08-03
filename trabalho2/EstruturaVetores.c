@@ -7,16 +7,18 @@
 typedef struct {
     int *valor;
     int tamanho;
+    int tamAtual;
 } EstruturaAux;
 
 
 EstruturaAux vetorPrincipal[TAM];
 
-// botar o trecho no inicio do main
+//botar o trecho no inicio do main
 void iniciarVetorPrincipal() {
     for (int i = 0; i < TAM; i++) {
         vetorPrincipal[i].valor = NULL;
         vetorPrincipal[i].tamanho = 0;
+        vetorPrincipal[i].tamAtual = 0;
     }
 }
 
@@ -34,28 +36,30 @@ Rertono (int)
 int criarEstruturaAuxiliar(int posicao, int tamanho)
 {
     int retorno = 0;
-    // se posição é um valor válido {entre 1 e 10}
-    if (posicao < 1 || posicao >= 10) {
+    //se posição é um valor válido {entre 1 e 10}
+    if (posicao < 1 || posicao > 10) {
         return retorno = POSICAO_INVALIDA;
     }
 
-    // o tamanho nao pode ser menor que 1
+    //o tamanho nao pode ser menor que 1
     if (tamanho < 1) {
        return retorno = TAMANHO_INVALIDO;
     }
 
     if (vetorPrincipal[posicao].valor != NULL) {
-        // a posicao pode já existir estrutura auxiliar
+        //a posicao pode já existir estrutura auxiliar
         return retorno = JA_TEM_ESTRUTURA_AUXILIAR;
     }
     else {
         vetorPrincipal[posicao].valor = (int *)malloc(tamanho * sizeof(int));
         if (vetorPrincipal[posicao].valor == NULL) {
-            // o tamanho ser muito grande
+            //o tamanho pode ser muito grande
            return retorno = SEM_ESPACO_DE_MEMORIA;
         }
         else {
-            // deu tudo certo, crie
+            //criando...
+            vetorPrincipal[posicao].tamanho = tamanho;
+            vetorPrincipal[posicao].tamAtual = 0;
            return retorno = SUCESSO;
         }      
     }    
@@ -73,33 +77,29 @@ CONSTANTES
 int inserirNumeroEmEstrutura(int posicao, int valor)
 {
     int retorno = 0;
-    int temEspaco = 0;
 
-    if (posicao < 1 || posicao >= 10)
+    //se posição é um valor válido {entre 1 e 10}
+    if (posicao < 1 || posicao > 10)
         return retorno = POSICAO_INVALIDA;
-    else
+
+    //testar se existe a estrutura auxiliar
+    if (vetorPrincipal[posicao].valor == NULL)
     {
-        // testar se existe a estrutura auxiliar
-        if (vetorPrincipal[posicao].valor != NULL)
-        {
-            // verificar se tem espaço na estrutura auxiliar
-            if (vetorPrincipal[posicao].tamanho)
-            {
-                //insere
-                retorno = SUCESSO;
-            }
-            else
-            {
-                retorno = SEM_ESPACO;
-            }
-        }
-        else
-        {
-           return retorno = SEM_ESTRUTURA_AUXILIAR;
-        }
+        return retorno = SEM_ESTRUTURA_AUXILIAR;
     }
 
+    //verificar se tem espaço na estrutura auxiliar
+    if (vetorPrincipal[posicao].tamAtual < vetorPrincipal[posicao].tamanho)
+    {
+        //inserindo...
+        vetorPrincipal[posicao].valor[vetorPrincipal[posicao].tamAtual] = valor;
+        vetorPrincipal[posicao].tamAtual++;
+        return retorno = SUCESSO;
+    }
+
+    return retorno = SEM_ESPACO;                    
 }
+
 
 /*
 Objetivo: excluir o numero 'valor' da estrutura auxiliar no final da estrutura.
@@ -114,8 +114,27 @@ Rertono (int)
 */
 int excluirNumeroDoFinaldaEstrutura(int posicao)
 {
-    int retorno = SUCESSO;
-    return retorno;
+    int retorno = 0;
+
+    //se posição é um valor válido {entre 1 e 10}
+    if (posicao < 1 || posicao > 10)
+        return retorno = POSICAO_INVALIDA;
+
+    //testar se existe a estrutura auxiliar
+    if (vetorPrincipal[posicao].valor == NULL)
+    {
+        return retorno = SEM_ESTRUTURA_AUXILIAR;
+    }
+
+    //verificar se a estrutura está vazia
+    if (vetorPrincipal[posicao].tamAtual == 0)
+    {
+        return retorno = ESTRUTURA_AUXILIAR_VAZIA;
+    }
+
+    //removendo...
+    vetorPrincipal[posicao].tamAtual--;
+    return retorno = SUCESSO; 
 }
 
 /*
@@ -133,22 +152,59 @@ Rertono (int)
 */
 int excluirNumeroEspecificoDeEstrutura(int posicao, int valor)
 {
-    int retorno = SUCESSO;
-    return retorno;
+    int retorno = 0;
+
+    //se posição é um valor válido {entre 1 e 10}
+    if (posicao < 1 || posicao > 10)
+        return retorno = POSICAO_INVALIDA;
+
+    //testar se existe a estrutura auxiliar
+    if (vetorPrincipal[posicao].valor == NULL)
+    {
+        return retorno = SEM_ESTRUTURA_AUXILIAR;
+    }
+
+    //verificar se a estrutura está vazia
+    if (vetorPrincipal[posicao].tamAtual == 0)
+    {
+        return retorno = ESTRUTURA_AUXILIAR_VAZIA;
+    }
+
+    //testar se o numero passado como argumento existe
+    int numExiste = 0;
+    int index = -1;
+    for (int i = 0; i < vetorPrincipal[posicao].tamanho; i++) {
+        if (vetorPrincipal[posicao].valor[i] == valor) {
+            numExiste = 1;
+            index = i;
+            break;
+        }
+    }
+
+    if (!numExiste) {
+        return retorno = NUMERO_INEXISTENTE;
+    }
+
+    //removendo...
+    for (int i = index; i < vetorPrincipal[posicao].tamAtual - 1; i++) {
+        vetorPrincipal[posicao].valor[i] = vetorPrincipal[posicao].valor[i + 1];
+    }
+    
+    vetorPrincipal[posicao].tamAtual--;
+
+    return retorno = SUCESSO;
 }
 
-// se posição é um valor válido {entre 1 e 10}
+//se posição é um valor válido {entre 1 e 10}
 int ehPosicaoValida(int posicao)
 {
     int retorno = 0;
     if (posicao < 1 || posicao > 10)
     {
-        retorno = POSICAO_INVALIDA;
+       return retorno = POSICAO_INVALIDA;
     }
     else
-        retorno = SUCESSO;
-
-    return retorno;
+        return retorno = SUCESSO;
 }
 /*
 Objetivo: retorna os números da estrutura auxiliar da posição 'posicao (1..10)'.
