@@ -217,10 +217,24 @@ Retorno (int)
 */
 int getDadosEstruturaAuxiliar(int posicao, int vetorAux[])
 {
-
     int retorno = 0;
 
-    return retorno;
+    //se posição é um valor válido {entre 1 e 10}
+    if (posicao < 1 || posicao >= 10) {
+        return POSICAO_INVALIDA;
+    }
+
+    //testar se existe a estrutura auxiliar    
+    if (vetorPrincipal[posicao].valor == NULL) {
+        return SEM_ESTRUTURA_AUXILIAR;
+    }
+
+    //copiar os elementos da estrutura auxiliar para o vetorAux
+    for (int i = 0; i < vetorPrincipal[posicao].tamAtual; i++) {
+        vetorAux[i] = vetorPrincipal[posicao].valor[i];
+    }
+
+    return SUCESSO;
 }
 
 /*
