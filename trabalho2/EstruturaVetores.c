@@ -13,7 +13,6 @@ typedef struct {
 
 EstruturaAux vetorPrincipal[TAM];
 
-//botar o trecho no inicio do main
 void iniciarVetorPrincipal() {
     for (int i = 0; i < TAM; i++) {
         vetorPrincipal[i].valor = NULL;
@@ -246,11 +245,41 @@ Rertono (int)
     SEM_ESTRUTURA_AUXILIAR - Não tem estrutura auxiliar
     POSICAO_INVALIDA - Posição inválida para estrutura auxiliar
 */
+
+//função para ordenar os elementos
+void bubbleSort(int vetor[], int tamanho) {
+    for (int i = 0; i < tamanho - 1; i++) {
+        for (int j = 0; j < tamanho - i - 1; j++) {
+            if (vetor[j] > vetor[j + 1]) {
+                int temp = vetor[j];
+                vetor[j] = vetor[j + 1];
+                vetor[j + 1] = temp;
+            }
+        }
+    }
+}
+
 int getDadosOrdenadosEstruturaAuxiliar(int posicao, int vetorAux[])
 {
-
     int retorno = 0;
+    
+    //se posição é um valor válido {entre 1 e 10}
+    if (posicao < 1 || posicao >= 10) {
+        return POSICAO_INVALIDA;
+    }
 
+    //testar se existe a estrutura auxiliar    
+    if (vetorPrincipal[posicao].valor == NULL) {
+        return SEM_ESTRUTURA_AUXILIAR;
+    }
+
+    //copiar os elementos da estrutura auxiliar para o vetorAux
+    for (int i = 0; i < vetorPrincipal[posicao].tamAtual; i++) {
+        vetorAux[i] = vetorPrincipal[posicao].valor[i];
+    }
+
+    //ordena
+    bubbleSort(vetorAux, vetorPrincipal[posicao].tamAtual);
 
     return retorno;
 }
