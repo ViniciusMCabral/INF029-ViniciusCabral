@@ -294,9 +294,26 @@ Rertono (int)
 */
 int getDadosDeTodasEstruturasAuxiliares(int vetorAux[])
 {
-
     int retorno = 0;
-    return retorno;
+    int IAux = 0;
+    int todasVazias = 0;
+
+    for (int i = 1; i <= 10; i++) {
+        if (vetorPrincipal[i].valor != NULL && vetorPrincipal[i].tamAtual > 0) {
+            todasVazias = 0;
+            //copiando valores da estrutura auxiliar para o vetorAux
+            for (int j = 0; j < vetorPrincipal[i].tamAtual; j++) {
+                vetorAux[IAux++] = vetorPrincipal[i].valor[j];
+            }
+        }
+    }
+
+    //testar se todas as estruturas auxiliares estavam vazias
+    if (todasVazias) {
+        return retorno = TODAS_ESTRUTURAS_AUXILIARES_VAZIAS;
+    }
+
+    return retorno = SUCESSO;
 }
 
 /*
@@ -309,9 +326,34 @@ Rertono (int)
 */
 int getDadosOrdenadosDeTodasEstruturasAuxiliares(int vetorAux[])
 {
-
     int retorno = 0;
-    return retorno;
+    int IAux = 0;
+    int todasVazias = 0;
+    int totalElementos = 0;
+
+    for (int i = 1; i <= 10; i++) {
+        if (vetorPrincipal[i].valor != NULL && vetorPrincipal[i].tamAtual > 0) {
+            todasVazias = 0;
+            totalElementos += vetorPrincipal[i].tamAtual;
+        }
+    }
+
+    //testar se todas as estruturas auxiliares estavam vazias
+    if (todasVazias) {
+        return retorno = TODAS_ESTRUTURAS_AUXILIARES_VAZIAS;
+    }
+
+    for (int i = 1; i <= 10; i++) {
+        if (vetorPrincipal[i].valor != NULL && vetorPrincipal[i].tamAtual > 0) {
+            for (int j = 0; j < vetorPrincipal[i].tamAtual; j++) {
+                vetorAux[IAux++] = vetorPrincipal[i].valor[j];
+            }
+        }
+    }
+
+    bubbleSort(vetorAux, totalElementos);
+
+    return retorno = SUCESSO;
 }
 
 /*
