@@ -88,15 +88,15 @@ int inserirNumeroEmEstrutura(int posicao, int valor)
     }
 
     //verificar se tem espaço na estrutura auxiliar
-    if (vetorPrincipal[posicao].tamAtual < vetorPrincipal[posicao].tamanho)
+    if (vetorPrincipal[posicao].tamAtual == vetorPrincipal[posicao].tamanho) 
     {
-        //inserindo...
-        vetorPrincipal[posicao].valor[vetorPrincipal[posicao].tamAtual] = valor;
-        vetorPrincipal[posicao].tamAtual++;
-        return retorno = SUCESSO;
+        return retorno = SEM_ESPACO;
     }
 
-    return retorno = SEM_ESPACO;                    
+    //inserindo...
+    vetorPrincipal[posicao].valor[vetorPrincipal[posicao].tamAtual] = valor;
+    vetorPrincipal[posicao].tamAtual++;
+    return retorno = SUCESSO;
 }
 
 
@@ -219,13 +219,13 @@ int getDadosEstruturaAuxiliar(int posicao, int vetorAux[])
     int retorno = 0;
 
     //se posição é um valor válido {entre 1 e 10}
-    if (posicao < 1 || posicao >= 10) {
-        return POSICAO_INVALIDA;
+    if (posicao < 1 || posicao > 10) {
+        return retorno = POSICAO_INVALIDA;
     }
 
     //testar se existe a estrutura auxiliar    
     if (vetorPrincipal[posicao].valor == NULL) {
-        return SEM_ESTRUTURA_AUXILIAR;
+        return retorno = SEM_ESTRUTURA_AUXILIAR;
     }
 
     //copiar os elementos da estrutura auxiliar para o vetorAux
@@ -233,7 +233,7 @@ int getDadosEstruturaAuxiliar(int posicao, int vetorAux[])
         vetorAux[i] = vetorPrincipal[posicao].valor[i];
     }
 
-    return SUCESSO;
+    return retorno = SUCESSO;
 }
 
 /*
@@ -264,13 +264,13 @@ int getDadosOrdenadosEstruturaAuxiliar(int posicao, int vetorAux[])
     int retorno = 0;
     
     //se posição é um valor válido {entre 1 e 10}
-    if (posicao < 1 || posicao >= 10) {
-        return POSICAO_INVALIDA;
+    if (posicao < 1 || posicao > 10) {
+        return retorno = POSICAO_INVALIDA;
     }
 
     //testar se existe a estrutura auxiliar    
     if (vetorPrincipal[posicao].valor == NULL) {
-        return SEM_ESTRUTURA_AUXILIAR;
+        return retorno = SEM_ESTRUTURA_AUXILIAR;
     }
 
     //copiar os elementos da estrutura auxiliar para o vetorAux
@@ -281,7 +281,7 @@ int getDadosOrdenadosEstruturaAuxiliar(int posicao, int vetorAux[])
     //ordena
     bubbleSort(vetorAux, vetorPrincipal[posicao].tamAtual);
 
-    return retorno;
+    return retorno = SUCESSO;
 }
 
 /*
@@ -296,7 +296,7 @@ int getDadosDeTodasEstruturasAuxiliares(int vetorAux[])
 {
     int retorno = 0;
     int IAux = 0;
-    int todasVazias = 0;
+    int todasVazias = 1;
 
     for (int i = 1; i <= 10; i++) {
         if (vetorPrincipal[i].valor != NULL && vetorPrincipal[i].tamAtual > 0) {
@@ -328,7 +328,7 @@ int getDadosOrdenadosDeTodasEstruturasAuxiliares(int vetorAux[])
 {
     int retorno = 0;
     int IAux = 0;
-    int todasVazias = 0;
+    int todasVazias = 1;
     int totalElementos = 0;
 
     for (int i = 1; i <= 10; i++) {
@@ -371,36 +371,36 @@ int modificarTamanhoEstruturaAuxiliar(int posicao, int novoTamanho)
 {
     int retorno = 0;
     //se posição é um valor válido {entre 1 e 10}
-    if (posicao < 1 || posicao >= 10) {
-        return retorno = POSICAO_INVALIDA;
+    if (posicao < 1 || posicao > 10) {
+        return retorno = retorno = POSICAO_INVALIDA;
     }
 
     //testar se existe a estrutura auxiliar    
     if (vetorPrincipal[posicao].valor == NULL) {
-        return SEM_ESTRUTURA_AUXILIAR;
+        return retorno = SEM_ESTRUTURA_AUXILIAR;
     }
     
+    int novoTamTotal = vetorPrincipal[posicao].tamanho + novoTamanho;
+
     //verificar se novo tamanho é negativo
-    if (novoTamanho < 0) {
-        return NOVO_TAMANHO_INVALIDO;
+    if (novoTamTotal < 0) {
+        return retorno = NOVO_TAMANHO_INVALIDO;
     }
-    
-    int novoTamTotal = vetorPrincipal[posicao].tamAtual + novoTamanho;
 
     if (novoTamTotal < 1) {
-        return NOVO_TAMANHO_INVALIDO;
+        return retorno = NOVO_TAMANHO_INVALIDO;
     }
 
     int *novoValor = (int *)realloc(vetorPrincipal[posicao].valor, novoTamTotal * sizeof(int));
 
     if (novoValor == NULL) {
-        return SEM_ESPACO_DE_MEMORIA;
+        return retorno = SEM_ESPACO_DE_MEMORIA;
     }
 
     vetorPrincipal[posicao].valor = novoValor;
     vetorPrincipal[posicao].tamAtual = novoTamTotal;
 
-    return SUCESSO;
+    return retorno = SUCESSO;
 }
 
 /*
@@ -416,21 +416,21 @@ int getQuantidadeElementosEstruturaAuxiliar(int posicao)
 {
     int retorno = 0;
     //se a posição é válida entre 1 e 10
-    if (posicao < 1 || posicao >= 10) {
-        return POSICAO_INVALIDA;
+    if (posicao < 1 || posicao > 10) {
+        return retorno = POSICAO_INVALIDA;
     }
 
     //se existe a estrutura auxiliar na posição especificada
     if (vetorPrincipal[posicao].valor == NULL) {
-        return SEM_ESTRUTURA_AUXILIAR;
+        return retorno = SEM_ESTRUTURA_AUXILIAR;
     }
 
     //se a estrutura está vazia
     if (vetorPrincipal[posicao].tamAtual == 0) {
-        return ESTRUTURA_AUXILIAR_VAZIA;
+        return retorno = ESTRUTURA_AUXILIAR_VAZIA;
     }
 
-    return vetorPrincipal[posicao].tamAtual;
+    return retorno = vetorPrincipal[posicao].tamAtual;
 }
 
 /*

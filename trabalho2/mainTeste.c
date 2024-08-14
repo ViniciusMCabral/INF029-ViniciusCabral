@@ -17,17 +17,17 @@ void testeListaEncadeada();
 
 int main()
 {
-    //inicializar();
-    //testeInserirSemNada();
-    //testeCriarEstrutura();
-    //testeInserirComEstrutura();
-    //testeExcluir();
-    //testeExcluirNumeroEspecifico();
-    /*testeListar();
+    inicializar();
+    testeInserirSemNada();
+    testeCriarEstrutura();
+    testeInserirComEstrutura();
+    testeExcluir();
+    testeExcluirNumeroEspecifico();
+    testeListar();
     testeRetornarTodosNumeros();
     testeMudarTamanhoEstrutura();
-    testeListaEncadeada();*/
-    //finalizar();
+    //testeListaEncadeada();
+    finalizar();
 }
 int ligado = 1;
 void show_log(char *str)
@@ -235,21 +235,21 @@ void testeMudarTamanhoEstrutura()
     printf("%d\n", modificarTamanhoEstruturaAuxiliar(1, 7) == SEM_ESTRUTURA_AUXILIAR);
 
     //modificar para tamanho de 3 para 1
-    printf("%d\n", modificarTamanhoEstruturaAuxiliar(2, -2) == SUCESSO);
-    printf("%d\n", getQuantidadeElementosEstruturaAuxiliar(2) == 1);
+    printf("%d\n", modificarTamanhoEstruturaAuxiliar(2, -2) == SUCESSO); \
+    printf("%d\n", getQuantidadeElementosEstruturaAuxiliar(2) == 1);\
     printf("%d\n", getDadosEstruturaAuxiliar(2, vet) == SUCESSO);
     printf("%d\n", vet[0] == 3);
 
     //modificar para tamanho de 1 para 4
     printf("%d\n", modificarTamanhoEstruturaAuxiliar(2, 3) == SUCESSO);
-    printf("%d\n", getQuantidadeElementosEstruturaAuxiliar(2) == 1);
+    printf("%d\n", getQuantidadeElementosEstruturaAuxiliar(2) == 1);/**/
     printf("%d\n", getDadosEstruturaAuxiliar(2, vet) == SUCESSO);
     printf("%d\n", vet[0] == 3);
 
     printf("%d\n", inserirNumeroEmEstrutura(2, 4) == SUCESSO);
     printf("%d\n", inserirNumeroEmEstrutura(2, -2) == SUCESSO);
     printf("%d\n", inserirNumeroEmEstrutura(2, 6) == SUCESSO);
-    printf("%d\n", inserirNumeroEmEstrutura(2, 5) == SEM_ESPACO);
+    printf("%d\n", inserirNumeroEmEstrutura(2, 5) == SEM_ESPACO);/**/
 }
 
 /*
