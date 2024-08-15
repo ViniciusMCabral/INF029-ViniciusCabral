@@ -13,14 +13,6 @@ typedef struct {
 
 EstruturaAux vetorPrincipal[TAM];
 
-void iniciarVetorPrincipal() {
-    for (int i = 0; i < TAM; i++) {
-        vetorPrincipal[i].valor = NULL;
-        vetorPrincipal[i].tamanho = 0;
-        vetorPrincipal[i].tamAtual = 0;
-    }
-}
-
 /*
 Objetivo: criar estrutura auxiliar na posição 'posicao'.
 com tamanho 'tamanho'
@@ -188,7 +180,7 @@ int excluirNumeroEspecificoDeEstrutura(int posicao, int valor)
     for (int i = index; i < vetorPrincipal[posicao].tamAtual - 1; i++) {
         vetorPrincipal[posicao].valor[i] = vetorPrincipal[posicao].valor[i + 1];
     }
-    
+
     vetorPrincipal[posicao].tamAtual--;
 
     return retorno = SUCESSO;
@@ -262,7 +254,7 @@ void bubbleSort(int vetor[], int tamanho) {
 int getDadosOrdenadosEstruturaAuxiliar(int posicao, int vetorAux[])
 {
     int retorno = 0;
-    
+
     //se posição é um valor válido {entre 1 e 10}
     if (posicao < 1 || posicao > 10) {
         return retorno = POSICAO_INVALIDA;
@@ -379,7 +371,7 @@ int modificarTamanhoEstruturaAuxiliar(int posicao, int novoTamanho)
     if (vetorPrincipal[posicao].valor == NULL) {
         return retorno = SEM_ESTRUTURA_AUXILIAR;
     }
-    
+
     int novoTamTotal = vetorPrincipal[posicao].tamanho + novoTamanho;
 
     //verificar se novo tamanho é negativo
@@ -440,10 +432,46 @@ Retorno (No*)
     NULL, caso não tenha nenhum número nas listas
     No*, ponteiro para o início da lista com cabeçote
 */
+
+
 No *montarListaEncadeadaComCabecote()
 {
 
-    return NULL;
+    No *lista = (No *)malloc(sizeof(No));
+    if (lista == NULL) {
+        return NULL;
+    }
+
+    lista->prox = NULL;
+    No *ultimo = lista; 
+
+    for (int i = 1; i <= 10; i++) {
+        if (vetorPrincipal[i].valor != NULL && vetorPrincipal[i].tamAtual > 0) {
+            for (int j = 0; j < vetorPrincipal[i].tamAtual; j++) {
+                No *novo = (No *)malloc(sizeof(No));
+                if (novo == NULL) {
+                    No *temp = lista;
+                    while (temp != NULL) {
+                        No *prox = temp->prox;
+                        free(temp);
+                        temp = prox;
+                    }
+                    return NULL;
+                }
+                novo->conteudo = vetorPrincipal[i].valor[j];
+                novo->prox = NULL;
+                ultimo->prox = novo;
+                ultimo = novo;
+            }
+        }
+    }
+
+    if (lista->prox == NULL) {
+        free(lista);
+        return NULL;
+    }
+
+    return lista;
 }
 
 /*
@@ -452,6 +480,18 @@ Retorno void
 */
 void getDadosListaEncadeadaComCabecote(No *inicio, int vetorAux[])
 {
+    if (inicio == NULL || inicio->prox == NULL) {
+        return;
+    }
+
+    No *atual = inicio->prox;
+    int i = 0;
+
+    while (atual != NULL) {
+        vetorAux[i] = atual->conteudo;
+        i++;
+        atual = atual->prox;
+    }
 }
 
 /*
@@ -463,6 +503,20 @@ Retorno
 */
 void destruirListaEncadeadaComCabecote(No **inicio)
 {
+    if (*inicio == NULL) {
+        return;
+    }
+
+    No *atual = *inicio;
+    No *proxNo;
+
+    while (atual != NULL) {
+        proxNo = atual->prox;
+        free(atual);
+        atual = proxNo;
+    }
+
+    *inicio = NULL;
 }
 
 /*
@@ -472,6 +526,11 @@ Objetivo: inicializa o programa. deve ser chamado ao inicio do programa
 
 void inicializar()
 {
+    for (int i = 0; i < TAM; i++) {
+        vetorPrincipal[i].valor = NULL;
+        vetorPrincipal[i].tamanho = 0;
+        vetorPrincipal[i].tamAtual = 0;
+    }
 }
 
 /*
@@ -482,4 +541,13 @@ para poder liberar todos os espaços de memória das estruturas auxiliares.
 
 void finalizar()
 {
+    for (int i = 1; i <= TAM; i++) {
+        if (vetorPrincipal[i].valor != NULL) {
+            free(vetorPrincipal[i].valor);
+
+            vetorPrincipal[i].valor = NULL;
+            vetorPrincipal[i].tamAtual = 0;
+            vetorPrincipal[i].tamanho = 0;
+        }
+    }
 }
