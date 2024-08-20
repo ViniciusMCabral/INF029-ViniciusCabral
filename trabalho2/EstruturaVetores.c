@@ -375,10 +375,6 @@ int modificarTamanhoEstruturaAuxiliar(int posicao, int novoTamanho)
     int novoTamTotal = vetorPrincipal[posicao].tamanho + novoTamanho;
 
     //verificar se novo tamanho é negativo
-    if (novoTamTotal < 0) {
-        return retorno = NOVO_TAMANHO_INVALIDO;
-    }
-
     if (novoTamTotal < 1) {
         return retorno = NOVO_TAMANHO_INVALIDO;
     }
@@ -478,19 +474,16 @@ No *montarListaEncadeadaComCabecote()
 Objetivo: retorna os números da lista enceada com cabeçote armazenando em vetorAux.
 Retorno void
 */
+
 void getDadosListaEncadeadaComCabecote(No *inicio, int vetorAux[])
 {
-    if (inicio == NULL || inicio->prox == NULL) {
-        return;
-    }
-
-    No *atual = inicio->prox;
+    No *atual = inicio;
     int i = 0;
 
-    while (atual != NULL) {
+    while (atual) {
         vetorAux[i] = atual->conteudo;
-        i++;
         atual = atual->prox;
+        i++;
     }
 }
 
@@ -501,21 +494,19 @@ O ponteiro inicio deve ficar com NULL.
 Retorno 
     void.
 */
+
 void destruirListaEncadeadaComCabecote(No **inicio)
 {
-    if (*inicio == NULL) {
-        return;
-    }
-
     No *atual = *inicio;
-    No *proxNo;
+    No *anterior = NULL;
 
-    while (atual != NULL) {
-        proxNo = atual->prox;
-        free(atual);
-        atual = proxNo;
+    while (atual) {
+        anterior = atual;
+        atual = atual->prox;
+        free(anterior);
+        anterior = NULL;
     }
-
+    
     *inicio = NULL;
 }
 
@@ -541,7 +532,7 @@ para poder liberar todos os espaços de memória das estruturas auxiliares.
 
 void finalizar()
 {
-    for (int i = 1; i <= TAM; i++) {
+    for (int i = 1; i < TAM; i++) {
         if (vetorPrincipal[i].valor != NULL) {
             free(vetorPrincipal[i].valor);
 
